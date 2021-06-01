@@ -27,6 +27,11 @@ def user_icon(user: User, size=None) -> str:
         portrait_size = 1024
     try:
         url = user.eve_profile.character_portrait_url(size=portrait_size)
+        alt = user.eve_profile.character_name
     except AttributeError:
         url = UserEveProfile.generic_character_portrait_url(1, size=portrait_size)
-    return {"url": url, "size": size}
+        try:
+            alt = user.username
+        except AttributeError:
+            alt = ""
+    return {"url": url, "alt": alt, "size": size}

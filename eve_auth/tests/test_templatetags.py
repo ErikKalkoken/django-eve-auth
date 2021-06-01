@@ -17,7 +17,7 @@ class TestUserIcon(TestCase):
     def test_should_render_html_for_user_default_size(self):
         # given
         template = Template("{% load eve_auth %}{% user_icon user %}")
-        user = create_fake_user(1001, "Bruce Wayne")
+        user = create_fake_user(1001, "User Bruce Wayne")
         context = Context({"user": user})
         # when
         result = template.render(context)
@@ -27,7 +27,7 @@ class TestUserIcon(TestCase):
             (
                 '<img class="eve-auth-user-icon" '
                 f'src="{CHARACTER_IMAGE_URL_BASE}/1001/portrait?size=32" '
-                'alt="" width="24" height="24">\n'
+                'alt="User Bruce Wayne" width="24" height="24">\n'
             ),
         )
 
@@ -37,7 +37,7 @@ class TestUserIcon(TestCase):
             template = Template(
                 "{% load eve_auth %}{% user_icon user " + str(size) + " %}"
             )
-            user = create_fake_user(1001, "Bruce Wayne")
+            user = create_fake_user(1001, "User Bruce Wayne")
             context = Context({"user": user})
             # when
             result = template.render(context)
@@ -47,14 +47,14 @@ class TestUserIcon(TestCase):
                 (
                     '<img class="eve-auth-user-icon" '
                     f'src="{CHARACTER_IMAGE_URL_BASE}/1001/portrait?size={size}" '
-                    f'alt="" width="{size}" height="{size}">\n'
+                    f'alt="User Bruce Wayne" width="{size}" height="{size}">\n'
                 ),
             )
 
     def test_should_return_portrait_url_for_user_with_size_overshoot(self):
         # given
         template = Template("{% load eve_auth %}{% user_icon user 2000 %}")
-        user = create_fake_user(1001, "Bruce Wayne")
+        user = create_fake_user(1001, "User Bruce Wayne")
         context = Context({"user": user})
         # when
         result = template.render(context)
@@ -64,14 +64,14 @@ class TestUserIcon(TestCase):
             (
                 '<img class="eve-auth-user-icon" '
                 f'src="{CHARACTER_IMAGE_URL_BASE}/1001/portrait?size=1024" '
-                'alt="" width="2000" height="2000">\n'
+                'alt="User Bruce Wayne" width="2000" height="2000">\n'
             ),
         )
 
     def test_should_return_portrait_url_for_user_with_size_undershoot(self):
         # given
         template = Template("{% load eve_auth %}{% user_icon user 16 %}")
-        user = create_fake_user(1001, "Bruce Wayne")
+        user = create_fake_user(1001, "User Bruce Wayne")
         context = Context({"user": user})
         # when
         result = template.render(context)
@@ -81,14 +81,14 @@ class TestUserIcon(TestCase):
             (
                 '<img class="eve-auth-user-icon" '
                 f'src="{CHARACTER_IMAGE_URL_BASE}/1001/portrait?size=32" '
-                'alt="" width="16" height="16">\n'
+                'alt="User Bruce Wayne" width="16" height="16">\n'
             ),
         )
 
     def test_should_return_dummy_portrait_for_invalid_input(self):
         # given
         template = Template("{% load eve_auth %}{% user_icon 'invalid' %}")
-        user = create_fake_user(1001, "Bruce Wayne")
+        user = create_fake_user(1001, "User Bruce Wayne")
         context = Context({"user": user})
         # when
         result = template.render(context)
@@ -105,7 +105,7 @@ class TestUserIcon(TestCase):
     def test_should_return_dummy_portrait_when_user_has_not_eve_profile(self):
         # given
         template = Template("{% load eve_auth %}{% user_icon 'invalid' %}")
-        user = get_user_model().objects.create(username="Dummy user")
+        user = get_user_model().objects.create(username="dummy")
         context = Context({"user": user})
         # when
         result = template.render(context)

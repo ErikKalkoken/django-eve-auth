@@ -6,7 +6,7 @@ Eve Auth enabled users to authenticate and login to a Django website using their
 [![python](https://img.shields.io/pypi/pyversions/django-eve-auth)](https://pypi.org/project/django-eve-auth/)
 [![django](https://img.shields.io/pypi/djversions/django-eve-auth?label=django)](https://pypi.org/project/django-eve-auth/)
 [![pipeline](https://gitlab.com/ErikKalkoken/django-eve-auth/badges/master/pipeline.svg)](https://gitlab.com/ErikKalkoken/django-eve-auth/-/pipelines)
-[![codecov](https://codecov.io/gl/ErikKalkoken/django-eve-auth/branch/master/graph/badge.svg?token=QHMCUAFZBV)](https://codecov.io/gl/ErikKalkoken/django-eve-auth)
+[![codecov](https://codecov.io/gl/ErikKalkoken/django-eve-auth/branch/master/graph/badge.svg?token=DXGHIE3BJ1)](https://codecov.io/gl/ErikKalkoken/django-eve-auth)
 [![license](https://img.shields.io/badge/license-MIT-green)](https://gitlab.com/ErikKalkoken/django-eve-auth/-/blob/master/LICENSE)
 [![pre-commit](https://img.shields.io/badge/pre--commit-enabled-brightgreen?logo=pre-commit&logoColor=white)](https://github.com/pre-commit/pre-commit)
 [![Code style: black](https://img.shields.io/badge/code%20style-black-000000.svg)](https://github.com/psf/black)
