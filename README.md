@@ -15,6 +15,7 @@ Eve Auth enabled users to authenticate and login to a Django website using their
 
 - [Features](#features)
 - [Installation](#installation)
+- [Usage](#usage)
 - [Settings](#settings)
 - [Change Log](CHANGELOG.md)
 
@@ -23,7 +24,7 @@ Eve Auth enabled users to authenticate and login to a Django website using their
 - User can login with via EVE SSO. New user accounts will automatically be created from the Eve character.
 - Users keep their account as long as the character does not change ownership
 - Template tag for creating user icons from the related eve character portrait
-- 100% tested
+- Fully tested
 
 ## Technical overview
 
@@ -86,12 +87,12 @@ Restart your Django server.
 
 Eve Auth comes with predefined views for logging and logging out users. To use them simple redirect to the respective view, e.g. in your template:
 
-- login: 'eve_auth:login'
-- logout: 'eve_auth:logout'
+- login: `eve_auth:login`
+- logout: `eve_auth:logout`
 
 Here is a simple example for creating a login link in a Django template:
 
-```html
+```jinja
 <a href="{% url 'eve_auth:login' %}">Login</a>
 ```
 
@@ -99,19 +100,19 @@ Here is a simple example for creating a login link in a Django template:
 
 To use the template tag you need to first load it on your template:
 
-```html
+```jinja
 {% load eve_auth %}
 ```
 
 Then you can use them like shown below, where `user` is an user object that has been created by this app and thus has an `user_eve_profile`:
 
-```html
+```jinja
 {% user_icon user %}
 ```
 
 This will create a user icon with the default size as defined by `EVE_AUTH_USER_ICON_DEFAULT_SIZE`. You can also define a custom size like so:
 
-```html
+```jinja
 {% user_icon user 128 %}
 ```
 
