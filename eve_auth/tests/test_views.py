@@ -2,7 +2,7 @@ from unittest.mock import patch
 
 from django.contrib.auth.models import User
 from django.contrib.sessions.middleware import SessionMiddleware
-from django.test import RequestFactory, TestCase, override_settings
+from django.test import RequestFactory, TestCase
 from django.urls import reverse
 from esi.models import Token
 
@@ -26,11 +26,9 @@ def fake_token(owner_hash):
     )
 
 
-@override_settings(
-    LOGIN_TOKEN_SCOPES="publicData",
-    LOGIN_URL="/login-failed",
-    LOGIN_SUCCESS_URL="/login-success",
-)
+@patch(MODULE_VIEWS + ".app_settings.LOGIN_TOKEN_SCOPES", "publicData")
+@patch(MODULE_VIEWS + ".app_settings.LOGIN_URL", "/login-failed")
+@patch(MODULE_VIEWS + ".app_settings.LOGIN_SUCCESS_URL", "/login-success")
 class TestLogin(TestCase):
     def setUp(self) -> None:
         self.factory = RequestFactory()
@@ -123,7 +121,7 @@ class TestLogin(TestCase):
         self.assertTrue(messages.error.called)
 
 
-@override_settings(LOGIN_URL="/logged-out")
+@patch(MODULE_VIEWS + ".app_settings.LOGIN_URL", "/logged-out")
 class TestLogout(TestCase):
     def setUp(self) -> None:
         self.factory = RequestFactory()
