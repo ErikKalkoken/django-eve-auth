@@ -16,13 +16,14 @@ OWNER_HASH = "owner-hash"
 OAUTH_TOKEN_URL = "https://login.eveonline.com/v2/oauth/token"
 
 
-def fake_token(owner_hash):
+def create_fake_token(owner_hash, user=None):
     return Token.objects.create(
         access_token="access-token",
         character_id=1001,
         character_name="Bruce Wayne",
         token_type="Character",
         character_owner_hash=owner_hash,
+        user=user,
     )
 
 
@@ -43,7 +44,7 @@ class TestLogin(TestCase):
 
     def test_should_create_and_login_new_user(self):
         # given
-        token = fake_token(OWNER_HASH)
+        token = create_fake_token(OWNER_HASH)
         # when
         request, response = self.login(token)
         # then
@@ -59,7 +60,7 @@ class TestLogin(TestCase):
 
     def test_should_login_existing_user(self):
         # given
-        token = fake_token(OWNER_HASH)
+        token = create_fake_token(OWNER_HASH)
         my_user = create_fake_user(1001, "Bruce Wayne", OWNER_HASH)
         # when
         request, response = self.login(token)
@@ -72,7 +73,7 @@ class TestLogin(TestCase):
 
     def test_should_create_and_login_new_user_when_owner_has_changed(self):
         # given
-        token = fake_token("new-owner-hash")
+        token = create_fake_token("new-owner-hash")
         my_user = create_fake_user(1001, "Bruce Wayne", OWNER_HASH)
         # when
         request, response = self.login(token)
@@ -91,7 +92,7 @@ class TestLogin(TestCase):
     @patch(MODULE_VIEWS + ".messages")
     def test_should_not_login_when_user_is_deactivate(self, messages):
         # given
-        token = fake_token(OWNER_HASH)
+        token = create_fake_token(OWNER_HASH)
         my_user = create_fake_user(1001, "Bruce Wayne", OWNER_HASH)
         my_user.is_active = False
         my_user.save()
@@ -108,7 +109,7 @@ class TestLogin(TestCase):
     def test_should_not_login_when_authentication_failed(self, authenticate, messages):
         # given
         authenticate.return_value = None
-        token = fake_token(OWNER_HASH)
+        token = create_fake_token(OWNER_HASH)
         my_user = create_fake_user(1001, "Bruce Wayne", OWNER_HASH)
         my_user.is_active = False
         my_user.save()
@@ -119,6 +120,22 @@ class TestLogin(TestCase):
         self.assertEqual(response.url, "/login-failed")
         self.assertNotIn("_auth_user_id", request.session)
         self.assertTrue(messages.error.called)
+
+    def test_should_delete_redundant_tokens(self):
+        # given
+        token = create_fake_token(OWNER_HASH)
+        user = create_fake_user(1001, "Bruce Wayne", OWNER_HASH)
+        create_fake_token(OWNER_HASH, user)
+        # when
+        request, response = self.login(token)
+        # then
+        self.assertEqual(response.status_code, 302)
+        self.assertEqual(response.url, "/login-success")
+        self.assertIn("_auth_user_id", request.session)
+        self.assertTrue(
+            User.objects.filter(pk=request.session["_auth_user_id"]).exists()
+        )
+        self.assertEqual(Token.objects.filter(user=user).count(), 1)
 
 
 @patch(MODULE_VIEWS + ".app_settings.LOGIN_URL", "/logged-out")
