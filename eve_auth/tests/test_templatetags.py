@@ -27,7 +27,7 @@ class TestUserIcon(TestCase):
             (
                 '<img class="eve-auth-user-icon" '
                 f'src="{CHARACTER_IMAGE_URL_BASE}/1001/portrait?size=32" '
-                'alt="" width="24" height="24">'
+                'alt="" width="24" height="24">\n'
             ),
         )
 
@@ -47,7 +47,7 @@ class TestUserIcon(TestCase):
                 (
                     '<img class="eve-auth-user-icon" '
                     f'src="{CHARACTER_IMAGE_URL_BASE}/1001/portrait?size={size}" '
-                    f'alt="" width="{size}" height="{size}">'
+                    f'alt="" width="{size}" height="{size}">\n'
                 ),
             )
 
@@ -64,7 +64,7 @@ class TestUserIcon(TestCase):
             (
                 '<img class="eve-auth-user-icon" '
                 f'src="{CHARACTER_IMAGE_URL_BASE}/1001/portrait?size=1024" '
-                'alt="" width="2000" height="2000">'
+                'alt="" width="2000" height="2000">\n'
             ),
         )
 
@@ -81,7 +81,7 @@ class TestUserIcon(TestCase):
             (
                 '<img class="eve-auth-user-icon" '
                 f'src="{CHARACTER_IMAGE_URL_BASE}/1001/portrait?size=32" '
-                'alt="" width="16" height="16">'
+                'alt="" width="16" height="16">\n'
             ),
         )
 
@@ -98,7 +98,7 @@ class TestUserIcon(TestCase):
             (
                 '<img class="eve-auth-user-icon" '
                 f'src="{CHARACTER_IMAGE_URL_BASE}/1/portrait?size=32" '
-                'alt="" width="24" height="24">'
+                'alt="" width="24" height="24">\n'
             ),
         )
 
@@ -115,6 +115,6 @@ class TestUserIcon(TestCase):
             (
                 '<img class="eve-auth-user-icon" '
                 f'src="{CHARACTER_IMAGE_URL_BASE}/1/portrait?size=32" '
-                'alt="" width="24" height="24">'
+                'alt="" width="24" height="24">\n'
             ),
         )
