@@ -1,9 +1,9 @@
 from django.conf import settings
 
 try:
-    EVE_AUTH_LOGIN_SCOPES = str(settings.EVE_AUTH_LOGIN_SCOPES)
+    EVE_AUTH_LOGIN_SCOPES = settings.EVE_AUTH_LOGIN_SCOPES
 except AttributeError:
-    EVE_AUTH_LOGIN_SCOPES = ""
+    EVE_AUTH_LOGIN_SCOPES = []
 
 try:
     EVE_AUTH_LOGIN_URL = str(settings.EVE_AUTH_LOGIN_URL)
