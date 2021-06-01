@@ -31,8 +31,10 @@ def create_fake_token(owner_hash, user=None):
 @patch(MODULE_VIEWS + ".app_settings.LOGIN_URL", "/login-failed")
 @patch(MODULE_VIEWS + ".app_settings.LOGIN_SUCCESS_URL", "/login-success")
 class TestLogin(TestCase):
-    def setUp(self) -> None:
-        self.factory = RequestFactory()
+    @classmethod
+    def setUpClass(cls) -> None:
+        super().setUpClass()
+        cls.factory = RequestFactory()
 
     def login(self, token):
         request = self.factory.get(reverse("eve_auth:login"))
