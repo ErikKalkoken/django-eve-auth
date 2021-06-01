@@ -27,9 +27,9 @@ def create_fake_token(owner_hash, user=None):
     )
 
 
-@patch(MODULE_VIEWS + ".app_settings.LOGIN_TOKEN_SCOPES", "publicData")
-@patch(MODULE_VIEWS + ".app_settings.LOGIN_URL", "/login-failed")
-@patch(MODULE_VIEWS + ".app_settings.LOGIN_SUCCESS_URL", "/login-success")
+@patch(MODULE_VIEWS + ".app_settings.EVE_AUTH_LOGIN_SCOPES", "publicData")
+@patch(MODULE_VIEWS + ".app_settings.EVE_AUTH_LOGIN_URL", "/login-failed")
+@patch(MODULE_VIEWS + ".app_settings.EVE_AUTH_LOGIN_SUCCESS_URL", "/login-success")
 class TestLogin(TestCase):
     @classmethod
     def setUpClass(cls) -> None:
@@ -140,7 +140,7 @@ class TestLogin(TestCase):
         self.assertEqual(Token.objects.filter(user=user).count(), 1)
 
 
-@patch(MODULE_VIEWS + ".app_settings.LOGIN_URL", "/logged-out")
+@patch(MODULE_VIEWS + ".app_settings.EVE_AUTH_LOGIN_URL", "/logged-out")
 class TestLogout(TestCase):
     def setUp(self) -> None:
         self.factory = RequestFactory()

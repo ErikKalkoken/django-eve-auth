@@ -11,7 +11,7 @@ from . import app_settings
 logger = logging.getLogger("__name__")
 
 
-@token_required(new=True, scopes=app_settings.LOGIN_TOKEN_SCOPES)
+@token_required(new=True, scopes=app_settings.EVE_AUTH_LOGIN_SCOPES)
 def login(request, token):
     """Login user with authorization from EVE SSO."""
     user = auth.authenticate(token=token)
@@ -28,15 +28,15 @@ def login(request, token):
             token.save()
         if user.is_active:
             auth.login(request, user)
-            return redirect(app_settings.LOGIN_SUCCESS_URL)
+            return redirect(app_settings.EVE_AUTH_LOGIN_SUCCESS_URL)
         else:
             messages.warning(request, _("Your have been banned from this website."))
     else:
         messages.error(request, _("Unable to authenticate as the selected character."))
-    return redirect(app_settings.LOGIN_URL)
+    return redirect(app_settings.EVE_AUTH_LOGIN_URL)
 
 
 def logout(request):
     """Logout current user."""
     auth.logout(request)
-    return redirect(app_settings.LOGIN_URL)
+    return redirect(app_settings.EVE_AUTH_LOGIN_URL)

@@ -1,16 +1,21 @@
 from django.conf import settings
 
 try:
-    LOGIN_TOKEN_SCOPES = str(settings.LOGIN_TOKEN_SCOPES)
+    EVE_AUTH_LOGIN_SCOPES = str(settings.EVE_AUTH_LOGIN_SCOPES)
 except AttributeError:
-    LOGIN_TOKEN_SCOPES = ""
+    EVE_AUTH_LOGIN_SCOPES = ""
 
 try:
-    LOGIN_URL = str(settings.LOGIN_URL)
+    EVE_AUTH_LOGIN_URL = str(settings.EVE_AUTH_LOGIN_URL)
 except AttributeError:
-    LOGIN_URL = "/"
+    EVE_AUTH_LOGIN_URL = "/"
 
 try:
-    LOGIN_SUCCESS_URL = str(settings.LOGIN_SUCCESS_URL)
+    EVE_AUTH_LOGIN_SUCCESS_URL = str(settings.EVE_AUTH_LOGIN_SUCCESS_URL)
 except AttributeError:
-    LOGIN_SUCCESS_URL = "/"
+    EVE_AUTH_LOGIN_SUCCESS_URL = "/"
+
+try:
+    EVE_AUTH_USER_ICON_DEFAULT_SIZE = str(settings.EVE_AUTH_USER_ICON_DEFAULT_SIZE)
+except AttributeError:
+    EVE_AUTH_USER_ICON_DEFAULT_SIZE = 24
