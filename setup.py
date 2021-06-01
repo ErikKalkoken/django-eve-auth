@@ -18,7 +18,7 @@ setup(
     packages=find_packages(),
     include_package_data=True,
     license="MIT",
-    description="User authentication with EVE SSO for Django",
+    description="Django user authentication via EVE SSO",
     long_description=long_description,
     long_description_content_type="text/markdown",
     url="https://gitlab.com/ErikKalkoken/django-eveuniverse",

@@ -1,21 +1,18 @@
 from django.conf import settings
 
-try:
-    EVE_AUTH_LOGIN_SCOPES = settings.EVE_AUTH_LOGIN_SCOPES
-except AttributeError:
-    EVE_AUTH_LOGIN_SCOPES = []
 
-try:
-    EVE_AUTH_LOGIN_URL = str(settings.EVE_AUTH_LOGIN_URL)
-except AttributeError:
-    EVE_AUTH_LOGIN_URL = "/"
+def get_setting_or_default(name: str, default):
+    """Return setting if defined and has same type as default. Else return default."""
+    if hasattr(settings, name):
+        value = getattr(settings, name)
+        return value if type(value) is type(default) else default
+    else:
+        return default
 
-try:
-    EVE_AUTH_LOGIN_SUCCESS_URL = str(settings.EVE_AUTH_LOGIN_SUCCESS_URL)
-except AttributeError:
-    EVE_AUTH_LOGIN_SUCCESS_URL = "/"
 
-try:
-    EVE_AUTH_USER_ICON_DEFAULT_SIZE = str(settings.EVE_AUTH_USER_ICON_DEFAULT_SIZE)
-except AttributeError:
-    EVE_AUTH_USER_ICON_DEFAULT_SIZE = 24
+EVE_AUTH_LOGIN_SCOPES = get_setting_or_default("EVE_AUTH_LOGIN_SCOPES", [])
+EVE_AUTH_LOGIN_URL = get_setting_or_default("EVE_AUTH_LOGIN_URL", "/")
+EVE_AUTH_LOGIN_SUCCESS_URL = get_setting_or_default("EVE_AUTH_LOGIN_SUCCESS_URL", "/")
+EVE_AUTH_USER_ICON_DEFAULT_SIZE = get_setting_or_default(
+    "EVE_AUTH_USER_ICON_DEFAULT_SIZE", 24
+)

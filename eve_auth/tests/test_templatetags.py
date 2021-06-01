@@ -25,7 +25,7 @@ class TestUserIcon(TestCase):
         self.assertEqual(
             result,
             (
-                '<img class="rounded" '
+                '<img class="eve-auth-user-icon" '
                 f'src="{CHARACTER_IMAGE_URL_BASE}/1001/portrait?size=32" '
                 'alt="" width="24" height="24">'
             ),
@@ -45,7 +45,7 @@ class TestUserIcon(TestCase):
             self.assertEqual(
                 result,
                 (
-                    '<img class="rounded" '
+                    '<img class="eve-auth-user-icon" '
                     f'src="{CHARACTER_IMAGE_URL_BASE}/1001/portrait?size={size}" '
                     f'alt="" width="{size}" height="{size}">'
                 ),
@@ -62,7 +62,7 @@ class TestUserIcon(TestCase):
         self.assertEqual(
             result,
             (
-                '<img class="rounded" '
+                '<img class="eve-auth-user-icon" '
                 f'src="{CHARACTER_IMAGE_URL_BASE}/1001/portrait?size=1024" '
                 'alt="" width="2000" height="2000">'
             ),
@@ -79,7 +79,7 @@ class TestUserIcon(TestCase):
         self.assertEqual(
             result,
             (
-                '<img class="rounded" '
+                '<img class="eve-auth-user-icon" '
                 f'src="{CHARACTER_IMAGE_URL_BASE}/1001/portrait?size=32" '
                 'alt="" width="16" height="16">'
             ),
@@ -96,7 +96,7 @@ class TestUserIcon(TestCase):
         self.assertEqual(
             result,
             (
-                '<img class="rounded" '
+                '<img class="eve-auth-user-icon" '
                 f'src="{CHARACTER_IMAGE_URL_BASE}/1/portrait?size=32" '
                 'alt="" width="24" height="24">'
             ),
@@ -113,7 +113,7 @@ class TestUserIcon(TestCase):
         self.assertEqual(
             result,
             (
-                '<img class="rounded" '
+                '<img class="eve-auth-user-icon" '
                 f'src="{CHARACTER_IMAGE_URL_BASE}/1/portrait?size=32" '
                 'alt="" width="24" height="24">'
             ),
