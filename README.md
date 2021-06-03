@@ -31,7 +31,7 @@ Eve Auth enabled users to authenticate and login to a Django website using their
 
 Eve Auth is designed to be used with [django-esi](https://gitlab.com/allianceauth/django-esi) for accessing ESI. Architecturally it is an extension of django-esi.
 
-Eve Auth adds profile information to each newly created user, which contains details about the Eve character the user logged in with. This allows each user to be treated as an eve character and vice versa. Note that the relation is one-to-one only. Multiple character ownership per user is not supported.
+Eve Auth adds eve_character information to each newly created user, which contains details about the Eve character the user logged in with. This allows each user to be treated as an eve character and vice versa. Note that the relation is one-to-one only. Multiple character ownership per user is not supported.
 
 After login a SSO token is stored for each user, which can be used later for accessing ESI through the django-esi API. By default logins do not require any ESI scopes, but you can add scopes via the setting `EVE_AUTH_LOGIN_SCOPES` (See [Settings](#settings) for details). Note that already existing users have to re-login for new tokens to be requested.
 
@@ -106,7 +106,7 @@ To use the template tag you need to first load it on your template:
 {% load eve_auth %}
 ```
 
-Then you can use them like shown below, where `user` is an user object that has been created by this app and thus has an `user_profile`:
+Then you can use them like shown below, where `user` is an user object that has been created by this app and thus has an `user_eve_character`:
 
 ```jinja
 {% user_icon user %}

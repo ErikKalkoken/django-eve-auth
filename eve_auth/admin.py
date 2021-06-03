@@ -5,23 +5,23 @@ from django.contrib.auth.admin import UserAdmin as BaseUserAdmin
 from django.contrib.auth.models import User
 from django.core.exceptions import ObjectDoesNotExist
 
-from .models import UserProfile
+from .models import UserEveCharacter
 
 
-class UserProfileInline(admin.StackedInline):
-    model = UserProfile
+class UserEveCharacterInline(admin.StackedInline):
+    model = UserEveCharacter
     can_delete = False
     readonly_fields = ("character_id", "character_name", "character_owner_hash")
 
 
 class UserAdmin(BaseUserAdmin):
-    inlines = (UserProfileInline,)
-    list_select_related = ("profile",)
+    inlines = (UserEveCharacterInline,)
+    list_select_related = ("eve_character",)
     list_display = ("username", "_character_name", "is_staff")
 
     def _character_name(self, obj) -> Optional[str]:
         try:
-            return obj.profile.character_name
+            return obj.eve_character.character_name
         except (ObjectDoesNotExist, AttributeError):
             return None
 

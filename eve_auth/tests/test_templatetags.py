@@ -102,7 +102,7 @@ class TestUserIcon(TestCase):
             ),
         )
 
-    def test_should_return_dummy_portrait_when_user_has_not_profile(self):
+    def test_should_return_dummy_portrait_when_user_has_not_eve_character(self):
         # given
         template = Template("{% load eve_auth %}{% user_icon 'invalid' %}")
         user = get_user_model().objects.create(username="dummy")

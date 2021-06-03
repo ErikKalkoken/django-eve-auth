@@ -54,9 +54,9 @@ class TestLogin(TestCase):
         user = User.objects.get(pk=request.session["_auth_user_id"])
         self.assertEqual(user.first_name, "Bruce")
         self.assertEqual(user.last_name, "Wayne")
-        self.assertEqual(user.profile.character_id, 1001)
-        self.assertEqual(user.profile.character_name, "Bruce Wayne")
-        self.assertEqual(user.profile.character_owner_hash, OWNER_HASH)
+        self.assertEqual(user.eve_character.character_id, 1001)
+        self.assertEqual(user.eve_character.character_name, "Bruce Wayne")
+        self.assertEqual(user.eve_character.character_owner_hash, OWNER_HASH)
 
     def test_should_login_existing_user(self):
         # given
@@ -78,8 +78,8 @@ class TestLogin(TestCase):
         existing_user.fist_name = "Peter"
         existing_user.last_name = "Parker"
         existing_user.save()
-        existing_user.profile.character_name = "Peter Parker"
-        existing_user.profile.save()
+        existing_user.eve_character.character_name = "Peter Parker"
+        existing_user.eve_character.save()
         # when
         request, response = self.login(new_login_token)
         # then
@@ -88,7 +88,7 @@ class TestLogin(TestCase):
         self.assertIn("_auth_user_id", request.session)
         user = User.objects.get(pk=request.session["_auth_user_id"])
         self.assertEqual(existing_user, user)
-        self.assertEqual(user.profile.character_name, "Bruce Wayne")
+        self.assertEqual(user.eve_character.character_name, "Bruce Wayne")
 
     def test_should_create_and_login_new_user_when_owner_has_changed(self):
         # given
@@ -104,9 +104,9 @@ class TestLogin(TestCase):
         self.assertNotEqual(existing_user, user)
         self.assertEqual(user.first_name, "Bruce")
         self.assertEqual(user.last_name, "Wayne")
-        self.assertEqual(user.profile.character_id, 1001)
-        self.assertEqual(user.profile.character_name, "Bruce Wayne")
-        self.assertEqual(user.profile.character_owner_hash, "new-owner-hash")
+        self.assertEqual(user.eve_character.character_id, 1001)
+        self.assertEqual(user.eve_character.character_name, "Bruce Wayne")
+        self.assertEqual(user.eve_character.character_owner_hash, "new-owner-hash")
 
     @patch(MODULE_VIEWS + ".messages")
     def test_should_not_login_when_user_is_deactivated(self, messages):

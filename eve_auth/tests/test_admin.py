@@ -12,7 +12,7 @@ class TestNotificationAdmin(TestCase):
         super().setUpClass()
         cls.modeladmin = UserAdmin(model=get_user_model(), admin_site=AdminSite())
 
-    def test_should_return_charater_name_when_profile_exists(self):
+    def test_should_return_charater_name_when_eve_character_exists(self):
         # given
         user = create_fake_user(1001, "Bruce Wayne")
         # when
@@ -20,7 +20,7 @@ class TestNotificationAdmin(TestCase):
         # then
         self.assertEqual(result, "Bruce Wayne")
 
-    def test_should_return_none_when_user_has_no_profile(self):
+    def test_should_return_none_when_user_has_no_eve_character(self):
         # given
         user = get_user_model().objects.create(username="dummy")
         # when
