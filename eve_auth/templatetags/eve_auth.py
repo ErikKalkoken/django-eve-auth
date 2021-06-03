@@ -2,7 +2,7 @@ from django import template
 from django.contrib.auth.models import User
 
 from .. import app_settings
-from ..models import UserEveProfile
+from ..models import UserProfile
 
 register = template.Library()
 
@@ -26,10 +26,10 @@ def user_icon(user: User, size=None) -> str:
     else:
         portrait_size = 1024
     try:
-        url = user.eve_profile.character_portrait_url(size=portrait_size)
-        alt = user.eve_profile.character_name
+        url = user.profile.character_portrait_url(size=portrait_size)
+        alt = user.profile.character_name
     except AttributeError:
-        url = UserEveProfile.generic_character_portrait_url(1, size=portrait_size)
+        url = UserProfile.generic_character_portrait_url(1, size=portrait_size)
         try:
             alt = user.username
         except AttributeError:

@@ -4,17 +4,17 @@ from django.conf import settings
 from django.db import models
 
 
-class UserEveProfile(models.Model):
+class UserProfile(models.Model):
     """Eve profile for a user."""
 
     CHARACTER_IMAGE_URL_BASE = "https://images.evetech.net/characters/"
     DEFAULT_PORTRAIT_SIZE = 32
 
     user = models.OneToOneField(
-        settings.AUTH_USER_MODEL, on_delete=models.CASCADE, related_name="eve_profile"
+        settings.AUTH_USER_MODEL, on_delete=models.CASCADE, related_name="profile"
     )
     # the character fields from esi.models.Token needs to be doubled here,
-    # because Tokens can be automatically deleted
+    # because the esi app might delete tokens automatically (e.g. invalid tokens)
     character_id = models.PositiveIntegerField()
     character_name = models.CharField(max_length=255)
     character_owner_hash = models.CharField(max_length=255)

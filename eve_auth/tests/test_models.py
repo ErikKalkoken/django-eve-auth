@@ -3,12 +3,12 @@ from django.test import TestCase
 from .utils import create_fake_user
 
 
-class TestUserEveProfile(TestCase):
+class TestUserProfile(TestCase):
     def test_should_return_character_name(self):
         # given
         user = create_fake_user(1001, "Bruce Wayne")
         # when
-        result = str(user.eve_profile)
+        result = str(user.profile)
         # then
         self.assertEqual(result, "Bruce Wayne")
 
@@ -16,7 +16,7 @@ class TestUserEveProfile(TestCase):
         # given
         user = create_fake_user(1001, "Bruce Wayne")
         # when
-        result = user.eve_profile.character_portrait_url()
+        result = user.profile.character_portrait_url()
         # then
         self.assertEqual(
             result, "https://images.evetech.net/characters/1001/portrait?size=32"
@@ -26,7 +26,7 @@ class TestUserEveProfile(TestCase):
         # given
         user = create_fake_user(1001, "Bruce Wayne")
         # when
-        result = user.eve_profile.character_portrait_url(128)
+        result = user.profile.character_portrait_url(128)
         # then
         self.assertEqual(
             result, "https://images.evetech.net/characters/1001/portrait?size=128"
@@ -37,25 +37,25 @@ class TestUserEveProfile(TestCase):
         user = create_fake_user(1001, "Bruce Wayne")
         # when
         with self.assertRaises(ValueError):
-            user.eve_profile.character_portrait_url("invalid")
+            user.profile.character_portrait_url("invalid")
 
     def test_should_raise_error_when_size_not_valid_1(self):
         # given
         user = create_fake_user(1001, "Bruce Wayne")
         # when
         with self.assertRaises(ValueError):
-            user.eve_profile.character_portrait_url(16)
+            user.profile.character_portrait_url(16)
 
     def test_should_raise_error_when_size_not_valid_2(self):
         # given
         user = create_fake_user(1001, "Bruce Wayne")
         # when
         with self.assertRaises(ValueError):
-            user.eve_profile.character_portrait_url(2048)
+            user.profile.character_portrait_url(2048)
 
     def test_should_raise_value_error_when_size_not_valid_3(self):
         # given
         user = create_fake_user(1001, "Bruce Wayne")
         # when
         with self.assertRaises(ValueError):
-            user.eve_profile.character_portrait_url(31)
+            user.profile.character_portrait_url(31)

@@ -6,7 +6,7 @@ from django.contrib.auth.backends import BaseBackend
 from django.contrib.auth.models import User
 from esi.models import Token
 
-from .models import UserEveProfile
+from .models import UserProfile
 
 logger = logging.getLogger(__name__)
 
@@ -19,7 +19,7 @@ class EveSSOBackend(BaseBackend):
         User = get_user_model()
         try:
             user = User.objects.get(
-                eve_profile__character_owner_hash=token.character_owner_hash
+                profile__character_owner_hash=token.character_owner_hash
             )
         except User.DoesNotExist:
             user = self.create_user_from_token(token)
@@ -35,7 +35,7 @@ class EveSSOBackend(BaseBackend):
             first_name=first_name,
             last_name=last_name,
         )
-        UserEveProfile.objects.create(
+        UserProfile.objects.create(
             user=user,
             character_id=token.character_id,
             character_name=token.character_name,

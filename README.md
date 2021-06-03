@@ -21,7 +21,7 @@ Eve Auth enabled users to authenticate and login to a Django website using their
 
 ## Features
 
-- User can login with via EVE SSO. New user accounts will automatically be created from the Eve character.
+- User can login via EVE SSO. New user accounts will automatically be created from the Eve character.
 - Users keep their account as long as the character does not change ownership
 - Template tag for creating user icons from the related eve character portrait
 - Fully tested
@@ -54,7 +54,8 @@ pip install django-eve-auth
 
 Configure your Django settings as follows:
 
-- Add `'eve_auth'` to your `INSTALLED_APPS`
+- Add `"eve_auth"` to your `INSTALLED_APPS`
+- Add `"eve_auth.backends.EveSSOBackend"` to `AUTHENTICATION_BACKENDS`. Make sure it is the first in the list.
 - Set `EVE_AUTH_LOGIN_URL` and `EVE_AUTH_LOGIN_SUCCESS_URL` to the corresponding view names of your site.
 - Optional: Add additional settings if you want to change any defaults. See [Settings](#settings) for the full list.
 
@@ -104,7 +105,7 @@ To use the template tag you need to first load it on your template:
 {% load eve_auth %}
 ```
 
-Then you can use them like shown below, where `user` is an user object that has been created by this app and thus has an `user_eve_profile`:
+Then you can use them like shown below, where `user` is an user object that has been created by this app and thus has an `user_profile`:
 
 ```jinja
 {% user_icon user %}
