@@ -18,10 +18,6 @@ class UserAdmin(BaseUserAdmin):
 
     list_display = ("username", "_character_name", "is_staff")
 
-    def get_queryset(self, request):
-        qs = super().get_queryset(request)
-        return qs.select_related("eve_profile__token")
-
     def _character_name(self, obj) -> Optional[str]:
         try:
             return obj.eve_profile.character_name

@@ -54,7 +54,9 @@ class TestLogin(TestCase):
         user = User.objects.get(pk=request.session["_auth_user_id"])
         self.assertEqual(user.first_name, "Bruce")
         self.assertEqual(user.last_name, "Wayne")
-        self.assertEqual(user.eve_profile.token, new_login_token)
+        self.assertEqual(user.eve_profile.character_id, 1001)
+        self.assertEqual(user.eve_profile.character_name, "Bruce Wayne")
+        self.assertEqual(user.eve_profile.character_owner_hash, OWNER_HASH)
 
     def test_should_login_existing_user(self):
         # given
@@ -83,7 +85,9 @@ class TestLogin(TestCase):
         self.assertNotEqual(existing_user, user)
         self.assertEqual(user.first_name, "Bruce")
         self.assertEqual(user.last_name, "Wayne")
-        self.assertEqual(user.eve_profile.token, new_login_token)
+        self.assertEqual(user.eve_profile.character_id, 1001)
+        self.assertEqual(user.eve_profile.character_name, "Bruce Wayne")
+        self.assertEqual(user.eve_profile.character_owner_hash, "new-owner-hash")
 
     @patch(MODULE_VIEWS + ".messages")
     def test_should_not_login_when_user_is_deactivated(self, messages):

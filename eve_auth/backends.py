@@ -19,7 +19,7 @@ class EveSSOBackend(BaseBackend):
         User = get_user_model()
         try:
             user = User.objects.get(
-                eve_profile__token__character_owner_hash=token.character_owner_hash
+                eve_profile__character_owner_hash=token.character_owner_hash
             )
         except User.DoesNotExist:
             user = self.create_user_from_token(token)
@@ -35,7 +35,12 @@ class EveSSOBackend(BaseBackend):
             first_name=first_name,
             last_name=last_name,
         )
-        UserEveProfile.objects.create(user=user, token=token)
+        UserEveProfile.objects.create(
+            user=user,
+            character_id=token.character_id,
+            character_name=token.character_name,
+            character_owner_hash=token.character_owner_hash,
+        )
         return user
 
     @staticmethod
