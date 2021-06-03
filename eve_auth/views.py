@@ -12,7 +12,7 @@ logger = logging.getLogger("__name__")
 
 
 @token_required(new=True, scopes=app_settings.EVE_AUTH_LOGIN_SCOPES)
-def login(request, token):
+def login(request, token: Token):
     """Login user with authorization from EVE SSO."""
     user = auth.authenticate(token=token)
     if user:

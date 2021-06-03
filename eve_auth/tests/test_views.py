@@ -7,7 +7,7 @@ from django.urls import reverse
 from esi.models import Token
 
 from .. import views
-from .utils import create_fake_user
+from .utils import create_fake_token, create_fake_user
 
 MODULE_BACKEND = "eve_auth.backends"
 MODULE_VIEWS = "eve_auth.views"
@@ -16,12 +16,10 @@ OWNER_HASH = "owner-hash"
 OAUTH_TOKEN_URL = "https://login.eveonline.com/v2/oauth/token"
 
 
-def create_fake_token(owner_hash, user=None):
-    return Token.objects.create(
-        access_token="access-token",
+def fake_token(owner_hash, user=None):
+    return create_fake_token(
         character_id=1001,
         character_name="Bruce Wayne",
-        token_type="Character",
         character_owner_hash=owner_hash,
         user=user,
     )
@@ -46,9 +44,9 @@ class TestLogin(TestCase):
 
     def test_should_create_and_login_new_user(self):
         # given
-        token = create_fake_token(OWNER_HASH)
+        new_login_token = fake_token(OWNER_HASH)
         # when
-        request, response = self.login(token)
+        request, response = self.login(new_login_token)
         # then
         self.assertEqual(response.status_code, 302)
         self.assertEqual(response.url, "/login-success")
@@ -56,50 +54,46 @@ class TestLogin(TestCase):
         user = User.objects.get(pk=request.session["_auth_user_id"])
         self.assertEqual(user.first_name, "Bruce")
         self.assertEqual(user.last_name, "Wayne")
-        self.assertEqual(user.eve_profile.character_name, "Bruce Wayne")
-        self.assertEqual(user.eve_profile.character_id, 1001)
-        self.assertEqual(user.eve_profile.owner_hash, OWNER_HASH)
+        self.assertEqual(user.eve_profile.token, new_login_token)
 
     def test_should_login_existing_user(self):
         # given
-        token = create_fake_token(OWNER_HASH)
-        my_user = create_fake_user(1001, "Bruce Wayne", OWNER_HASH)
+        new_login_token = fake_token(OWNER_HASH)
+        existing_user = create_fake_user(1001, "Bruce Wayne", OWNER_HASH)
         # when
-        request, response = self.login(token)
+        request, response = self.login(new_login_token)
         # then
         self.assertEqual(response.status_code, 302)
         self.assertEqual(response.url, "/login-success")
         self.assertIn("_auth_user_id", request.session)
         user = User.objects.get(pk=request.session["_auth_user_id"])
-        self.assertEqual(my_user, user)
+        self.assertEqual(existing_user, user)
 
     def test_should_create_and_login_new_user_when_owner_has_changed(self):
         # given
-        token = create_fake_token("new-owner-hash")
-        my_user = create_fake_user(1001, "Bruce Wayne", OWNER_HASH)
+        new_login_token = fake_token("new-owner-hash")
+        existing_user = create_fake_user(1001, "Bruce Wayne", OWNER_HASH)
         # when
-        request, response = self.login(token)
+        request, response = self.login(new_login_token)
         # then
         self.assertEqual(response.status_code, 302)
         self.assertEqual(response.url, "/login-success")
         self.assertIn("_auth_user_id", request.session)
         user = User.objects.get(pk=request.session["_auth_user_id"])
-        self.assertNotEqual(my_user, user)
+        self.assertNotEqual(existing_user, user)
         self.assertEqual(user.first_name, "Bruce")
         self.assertEqual(user.last_name, "Wayne")
-        self.assertEqual(user.eve_profile.character_name, "Bruce Wayne")
-        self.assertEqual(user.eve_profile.character_id, 1001)
-        self.assertEqual(user.eve_profile.owner_hash, "new-owner-hash")
+        self.assertEqual(user.eve_profile.token, new_login_token)
 
     @patch(MODULE_VIEWS + ".messages")
-    def test_should_not_login_when_user_is_deactivate(self, messages):
+    def test_should_not_login_when_user_is_deactivated(self, messages):
         # given
-        token = create_fake_token(OWNER_HASH)
-        my_user = create_fake_user(1001, "Bruce Wayne", OWNER_HASH)
-        my_user.is_active = False
-        my_user.save()
+        new_login_token = fake_token(OWNER_HASH)
+        existing_user = create_fake_user(1001, "Bruce Wayne", OWNER_HASH)
+        existing_user.is_active = False
+        existing_user.save()
         # when
-        request, response = self.login(token)
+        request, response = self.login(new_login_token)
         # then
         self.assertEqual(response.status_code, 302)
         self.assertEqual(response.url, "/login-failed")
@@ -111,33 +105,27 @@ class TestLogin(TestCase):
     def test_should_not_login_when_authentication_failed(self, authenticate, messages):
         # given
         authenticate.return_value = None
-        token = create_fake_token(OWNER_HASH)
-        my_user = create_fake_user(1001, "Bruce Wayne", OWNER_HASH)
-        my_user.is_active = False
-        my_user.save()
+        new_login_token = fake_token(OWNER_HASH)
+        create_fake_user(1001, "Bruce Wayne", OWNER_HASH)
         # when
-        request, response = self.login(token)
+        request, response = self.login(new_login_token)
         # then
         self.assertEqual(response.status_code, 302)
         self.assertEqual(response.url, "/login-failed")
         self.assertNotIn("_auth_user_id", request.session)
         self.assertTrue(messages.error.called)
 
-    def test_should_delete_redundant_tokens(self):
+    def test_should_delete_new_login_token_if_user_already_exists(self):
         # given
-        token = create_fake_token(OWNER_HASH)
-        user = create_fake_user(1001, "Bruce Wayne", OWNER_HASH)
-        create_fake_token(OWNER_HASH, user)
+        existing_user = create_fake_user(1001, "Bruce Wayne", OWNER_HASH)
+        new_login_token = fake_token(OWNER_HASH)
         # when
-        request, response = self.login(token)
+        request, response = self.login(new_login_token)
         # then
         self.assertEqual(response.status_code, 302)
         self.assertEqual(response.url, "/login-success")
-        self.assertIn("_auth_user_id", request.session)
-        self.assertTrue(
-            User.objects.filter(pk=request.session["_auth_user_id"]).exists()
-        )
-        self.assertEqual(Token.objects.filter(user=user).count(), 1)
+        self.assertEqual(int(request.session["_auth_user_id"]), existing_user.id)
+        self.assertFalse(Token.objects.filter(pk=new_login_token.pk).exists())
 
 
 @patch(MODULE_VIEWS + ".app_settings.EVE_AUTH_LOGIN_URL", "/logged-out")

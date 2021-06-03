@@ -11,7 +11,6 @@ from .models import UserEveProfile
 class UserEveProfileInline(admin.StackedInline):
     model = UserEveProfile
     can_delete = False
-    readonly_fields = ("character_id", "character_name", "owner_hash")
 
 
 class UserAdmin(BaseUserAdmin):

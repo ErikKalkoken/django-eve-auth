@@ -13,7 +13,7 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 
 ### Fixed
 
-## [0.1.0] - tbd
+## [0.2.0] - tbd
 
 ### Added
 

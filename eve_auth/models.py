@@ -2,6 +2,7 @@ from urllib.parse import urlencode, urljoin
 
 from django.conf import settings
 from django.db import models
+from esi.models import Token
 
 
 class UserEveProfile(models.Model):
@@ -13,12 +14,20 @@ class UserEveProfile(models.Model):
     user = models.OneToOneField(
         settings.AUTH_USER_MODEL, on_delete=models.CASCADE, related_name="eve_profile"
     )
-    character_id = models.PositiveIntegerField(db_index=True)
-    character_name = models.CharField(max_length=255, db_index=True)
-    owner_hash = models.CharField(max_length=255, unique=True)
+    token = models.OneToOneField(
+        Token, on_delete=models.CASCADE, related_name="eve_profile"
+    )
 
     def __str__(self) -> str:
         return self.character_name
+
+    @property
+    def character_id(self):
+        return self.token.character_id
+
+    @property
+    def character_name(self):
+        return self.token.character_name
 
     def character_portrait_url(self, size: int = DEFAULT_PORTRAIT_SIZE) -> str:
         """Return the image URL of the user's character portrait"""

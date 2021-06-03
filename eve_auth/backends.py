@@ -3,6 +3,7 @@ import re
 
 from django.contrib.auth import get_user_model
 from django.contrib.auth.backends import BaseBackend
+from django.contrib.auth.models import User
 from esi.models import Token
 
 from .models import UserEveProfile
@@ -11,39 +12,30 @@ logger = logging.getLogger(__name__)
 
 
 class EveSSOBackend(BaseBackend):
-    def authenticate(self, request, token=None) -> object:
+    def authenticate(self, request, token: Token = None) -> User:
         """Authenticate user with Eve token."""
         if not isinstance(token, Token):
             return None
         User = get_user_model()
         try:
-            user = User.objects.get(eve_profile__owner_hash=token.character_owner_hash)
-        except User.DoesNotExist:
-            user = self.create_user_from_eve_character(
-                character_id=token.character_id,
-                charater_name=token.character_name,
-                owner_hash=token.character_owner_hash,
+            user = User.objects.get(
+                eve_profile__token__character_owner_hash=token.character_owner_hash
             )
+        except User.DoesNotExist:
+            user = self.create_user_from_token(token)
         return user
 
     @classmethod
-    def create_user_from_eve_character(
-        cls, character_id: int, charater_name: str, owner_hash: str
-    ) -> object:
-        """Create new user object with eve profile from an eve character."""
-        username = cls._clean_username(charater_name)
-        first_name, last_name = cls._first_and_last_name(charater_name)
+    def create_user_from_token(cls, token: Token) -> object:
+        """Create new user object from an ESI token."""
+        username = cls._clean_username(token.character_name)
+        first_name, last_name = cls._first_and_last_name(token.character_name)
         user = get_user_model().objects.create(
             username=cls._generate_username(username),
             first_name=first_name,
             last_name=last_name,
         )
-        UserEveProfile.objects.create(
-            user=user,
-            character_id=character_id,
-            character_name=charater_name,
-            owner_hash=owner_hash,
-        )
+        UserEveProfile.objects.create(user=user, token=token)
         return user
 
     @staticmethod
