@@ -23,6 +23,9 @@ class EveSSOBackend(BaseBackend):
             )
         except User.DoesNotExist:
             user = self.create_user_from_token(token)
+        else:
+            user.profile.character_name = token.character_name
+            user.profile.save()
         return user
 
     @classmethod

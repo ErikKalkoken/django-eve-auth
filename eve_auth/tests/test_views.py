@@ -71,6 +71,25 @@ class TestLogin(TestCase):
         user = User.objects.get(pk=request.session["_auth_user_id"])
         self.assertEqual(existing_user, user)
 
+    def test_should_update_character_name_when_logging_in_existing_user(self):
+        # given
+        new_login_token = fake_token(OWNER_HASH)
+        existing_user = create_fake_user(1001, "Bruce Wayne", OWNER_HASH)
+        existing_user.fist_name = "Peter"
+        existing_user.last_name = "Parker"
+        existing_user.save()
+        existing_user.profile.character_name = "Peter Parker"
+        existing_user.profile.save()
+        # when
+        request, response = self.login(new_login_token)
+        # then
+        self.assertEqual(response.status_code, 302)
+        self.assertEqual(response.url, "/login-success")
+        self.assertIn("_auth_user_id", request.session)
+        user = User.objects.get(pk=request.session["_auth_user_id"])
+        self.assertEqual(existing_user, user)
+        self.assertEqual(user.profile.character_name, "Bruce Wayne")
+
     def test_should_create_and_login_new_user_when_owner_has_changed(self):
         # given
         new_login_token = fake_token("new-owner-hash")

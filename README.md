@@ -24,6 +24,7 @@ Eve Auth enabled users to authenticate and login to a Django website using their
 - User can login via EVE SSO. New user accounts will automatically be created from the Eve character.
 - Users keep their account as long as the character does not change ownership
 - Template tag for creating user icons from the related eve character portrait
+- User's character name is updated with every new login
 - Fully tested
 
 ## Technical overview
