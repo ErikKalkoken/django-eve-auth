@@ -16,10 +16,13 @@ class UserEveProfileInline(admin.StackedInline):
 class UserAdmin(BaseUserAdmin):
     inlines = (UserEveProfileInline,)
 
-    list_select_related = True
-    list_display = ("username", "_charater_name", "is_staff")
+    list_display = ("username", "_character_name", "is_staff")
 
-    def _charater_name(self, obj) -> Optional[str]:
+    def get_queryset(self, request):
+        qs = super().get_queryset(request)
+        return qs.select_related("eve_profile__token")
+
+    def _character_name(self, obj) -> Optional[str]:
         try:
             return obj.eve_profile.character_name
         except (ObjectDoesNotExist, AttributeError):

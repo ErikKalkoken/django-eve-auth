@@ -16,7 +16,7 @@ class TestNotificationAdmin(TestCase):
         # given
         user = create_fake_user(1001, "Bruce Wayne")
         # when
-        result = self.modeladmin._charater_name(user)
+        result = self.modeladmin._character_name(user)
         # then
         self.assertEqual(result, "Bruce Wayne")
 
@@ -24,6 +24,6 @@ class TestNotificationAdmin(TestCase):
         # given
         user = get_user_model().objects.create(username="dummy")
         # when
-        result = self.modeladmin._charater_name(user)
+        result = self.modeladmin._character_name(user)
         # then
         self.assertIsNone(result)
