@@ -13,8 +13,8 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 
 ### Fixed
 
-## [0.2.0] - tbd
+## [0.2.0a1] - 2021-06-04
 
 ### Added
 
-- Initial public release
+- Initial alpha release

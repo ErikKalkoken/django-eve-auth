@@ -29,11 +29,11 @@ compilemessages:
 	django-admin compilemessages -l zh_Hans
 
 coverage:
-	coverage run ../allianceauth-app-dir/manage.py test $(package).tests --keepdb --failfast --debug-mode && coverage html && coverage report
+	coverage run ../appdir/manage.py test $(package).tests --keepdb --failfast --debug-mode && coverage html && coverage report
 
 test:
 	# runs a full test incl. re-creating of the test DB
-	python ../allianceauth-app-dir/manage.py test $(package) --failfast --debug-mode -v 2
+	python ../appdir/manage.py test $(package) --failfast --debug-mode -v 2
 
 pylint:
 	pylint --load-plugins pylint_django $(package)
@@ -50,4 +50,4 @@ flake8:
 	flake8 $(package) --count
 
 graph_models:
-	python ../allianceauth-app-dir/manage.py graph_models eve_auth esi -g --arrow-shape normal -o $(appname)_models.png
+	python ../appdir/manage.py graph_models eve_auth esi -g --arrow-shape normal -o $(appname)_models.png
