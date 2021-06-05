@@ -59,7 +59,7 @@ Configure your Django settings as follows:
 
 - Add `"eve_auth"` to your `INSTALLED_APPS`
 - Add `"eve_auth.backends.EveSSOBackend"` to `AUTHENTICATION_BACKENDS`. Make sure it is the first in the list.
-- Set `EVE_AUTH_LOGIN_URL` and `EVE_AUTH_LOGIN_SUCCESS_URL` to the corresponding view names of your site.
+- Set `LOGIN_URL`, `LOGOUT_REDIRECT_URL` and `LOGIN_REDIRECT_URL` to the corresponding view names of your site.
 - Optional: Add additional settings if you want to change any defaults. See [Settings](#settings) for the full list.
 
 ### Step 3 - Include URLs
@@ -147,7 +147,5 @@ Note that all settings are optional and the app will use the documented default 
 
 Name | Description | Default
 -- | -- | --
-`EVE_AUTH_LOGIN_URL`| name of view of path to redirect to after logging out. | `'/'`
-`EVE_AUTH_LOGIN_SUCCESS_URL`| name of view of path to redirect to after successful login. | `'/'`
 `EVE_AUTH_LOGIN_SCOPES`| List of ESI scope names to be requested with every login. e.g. `['esi-universe.read_structures.v1', 'esi-search.search_structures.v1']`. The default will not request any scopes.  | `[]`
 `EVE_AUTH_USER_ICON_DEFAULT_SIZE`| Default size of user icons in pixel. | `24`

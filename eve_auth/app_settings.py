@@ -11,8 +11,6 @@ def get_setting_or_default(name: str, default):
 
 
 EVE_AUTH_LOGIN_SCOPES = get_setting_or_default("EVE_AUTH_LOGIN_SCOPES", [])
-EVE_AUTH_LOGIN_URL = get_setting_or_default("EVE_AUTH_LOGIN_URL", "/")
-EVE_AUTH_LOGIN_SUCCESS_URL = get_setting_or_default("EVE_AUTH_LOGIN_SUCCESS_URL", "/")
 EVE_AUTH_USER_ICON_DEFAULT_SIZE = get_setting_or_default(
     "EVE_AUTH_USER_ICON_DEFAULT_SIZE", 24
 )

@@ -11,24 +11,24 @@ class TestGetSettingOrDefault(TestCase):
     @patch(MODULE_PATH + ".settings")
     def test_should_return_value_if_set(self, settings):
         # given
-        settings.EVE_AUTH_LOGIN_URL = "my-url"
+        settings.EVE_AUTH_LOGIN_SCOPES = "my-url"
         # when
-        result = get_setting_or_default("EVE_AUTH_LOGIN_URL", "/")
+        result = get_setting_or_default("EVE_AUTH_LOGIN_SCOPES", "/")
         # then
         self.assertEqual(result, "my-url")
 
     @patch(MODULE_PATH + ".settings", object())
     def test_should_return_default_if_not_set(self):
         # when
-        result = get_setting_or_default("EVE_AUTH_LOGIN_URL", "/")
+        result = get_setting_or_default("EVE_AUTH_LOGIN_SCOPES", "/")
         # then
         self.assertEqual(result, "/")
 
     @patch(MODULE_PATH + ".settings")
     def test_should_return_default_if_wrong_type(self, settings):
         # given
-        settings.EVE_AUTH_LOGIN_URL = []
+        settings.EVE_AUTH_LOGIN_SCOPES = []
         # when
-        result = get_setting_or_default("EVE_AUTH_LOGIN_URL", "/")
+        result = get_setting_or_default("EVE_AUTH_LOGIN_SCOPES", "/")
         # then
         self.assertEqual(result, "/")
