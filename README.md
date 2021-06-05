@@ -24,6 +24,7 @@ Eve Auth enabled users to authenticate and login to a Django website using their
 - Users can login via EVE SSO. New user accounts will automatically be created from the Eve character.
 - Users keep their accounts as long as the character does not change ownership
 - User's character name is updated with every new login
+- Supports Django's default login URLs and next parameter
 - Also includes a template tag for creating user icons with the related eve character portrait
 - Fully tested
 
@@ -98,6 +99,12 @@ Here is a simple example for creating a login link in a Django template:
 
 ```jinja
 <a href="{% url 'eve_auth:login' %}">Login</a>
+```
+
+Both login and logout support the `next` parameter. Here is an example snippet for returning to the current page after successful login:
+
+```jinja
+<a href="{% url 'eve_auth:login' %}?next=request.path">Login</a>
 ```
 
 ### Accessing the eve character of a user

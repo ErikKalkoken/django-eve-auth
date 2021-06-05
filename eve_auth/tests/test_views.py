@@ -34,8 +34,11 @@ class TestLogin(TestCase):
         super().setUpClass()
         cls.factory = RequestFactory()
 
-    def login(self, token):
-        request = self.factory.get(reverse("eve_auth:login"))
+    def login(self, token, next_url=None):
+        url = reverse("eve_auth:login")
+        if next_url:
+            url += f"?next={next_url}"
+        request = self.factory.get(url)
         middleware = SessionMiddleware()
         middleware.process_request(request)
         request.session.save()
@@ -150,13 +153,26 @@ class TestLogin(TestCase):
         self.assertEqual(int(request.session["_auth_user_id"]), existing_user.id)
         self.assertFalse(Token.objects.filter(pk=new_login_token.pk).exists())
 
+    def test_should_login_existing_user_and_redirect_to_next(self):
+        # given
+        new_login_token = fake_token(OWNER_HASH)
+        existing_user = create_fake_user(1001, "Bruce Wayne", OWNER_HASH)
+        # when
+        request, response = self.login(new_login_token, next_url="/new-page")
+        # then
+        self.assertEqual(response.status_code, 302)
+        self.assertEqual(response.url, "/new-page")
+        self.assertIn("_auth_user_id", request.session)
+        user = User.objects.get(pk=request.session["_auth_user_id"])
+        self.assertEqual(existing_user, user)
+
 
 @patch(MODULE_VIEWS + ".settings.LOGIN_URL", "/logged-out")
 class TestLogout(TestCase):
     def setUp(self) -> None:
         self.factory = RequestFactory()
 
-    def test_should_logout_user(self):
+    def test_should_logout_user_with_default_redirect(self):
         # given
         user = create_fake_user(1001, "Bruce Wayne", OWNER_HASH)
         request = self.factory.get(reverse("eve_auth:login"))
@@ -169,4 +185,20 @@ class TestLogout(TestCase):
         # then
         self.assertEqual(response.status_code, 302)
         self.assertEqual(response.url, "/logged-out")
+        self.assertFalse(request.user.is_authenticated)
+
+    def test_should_logout_user_and_redirect_to_next(self):
+        # given
+        user = create_fake_user(1001, "Bruce Wayne", OWNER_HASH)
+        url = reverse("eve_auth:login") + "?next=/new-page"
+        request = self.factory.get(url)
+        request.user = user
+        middleware = SessionMiddleware()
+        middleware.process_request(request)
+        request.session.save()
+        # when
+        response = views.logout(request)
+        # then
+        self.assertEqual(response.status_code, 302)
+        self.assertEqual(response.url, "/new-page")
         self.assertFalse(request.user.is_authenticated)
