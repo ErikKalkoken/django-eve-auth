@@ -21,7 +21,7 @@ setup(
     description="Django user authentication via EVE SSO",
     long_description=long_description,
     long_description_content_type="text/markdown",
-    url="https://gitlab.com/ErikKalkoken/django-eveuniverse",
+    url="https://gitlab.com/ErikKalkoken/django-eve-auth",
     author="Erik Kalkoken",
     author_email="kalkoken87@gmail.com",
     classifiers=[
@@ -29,6 +29,7 @@ setup(
         "Framework :: Django",
         "Framework :: Django :: 2.2",
         "Framework :: Django :: 3.1",
+        "Framework :: Django :: 3.2",
         "Intended Audience :: Developers",
         "License :: OSI Approved :: MIT License",
         "Operating System :: OS Independent",

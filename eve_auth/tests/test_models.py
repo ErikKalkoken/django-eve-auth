@@ -1,6 +1,6 @@
 from django.test import TestCase
 
-from .utils import create_fake_user
+from ..tools.test_tools import create_fake_user
 
 
 class TestUserEveCharacter(TestCase):

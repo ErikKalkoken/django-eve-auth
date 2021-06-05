@@ -7,7 +7,7 @@ from django.urls import reverse
 from esi.models import Token
 
 from .. import views
-from .utils import create_fake_token, create_fake_user
+from ..tools.test_tools import create_fake_token, create_fake_user
 
 MODULE_BACKEND = "eve_auth.backends"
 MODULE_VIEWS = "eve_auth.views"

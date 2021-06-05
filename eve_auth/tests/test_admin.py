@@ -3,7 +3,7 @@ from django.contrib.auth import get_user_model
 from django.test import TestCase
 
 from ..admin import UserAdmin
-from .utils import create_fake_user
+from ..tools.test_tools import create_fake_user
 
 
 class TestNotificationAdmin(TestCase):

@@ -135,6 +135,10 @@ You can also customize the user icons by adding styles for the CSS class `eve-au
 
 If you need to add custom information to an user object for your site  - e.g. a user profile - you can use the standard approach for extending the User model with an one-two-one relation. This is explained in detail in this chapter of the official Django documentation: [Extending the existing User model](https://docs.djangoproject.com/en/3.2/topics/auth/customizing/#extending-the-existing-user-model)
 
+### Tests
+
+If you need to create users with eve characters for your unit tests please check out our the test tools at `eve_auth.tools.test_tools`:
+
 ## Settings
 
 Here is a list of available settings for this app. They can be configured by adding them to your AA settings file (`local.py`).

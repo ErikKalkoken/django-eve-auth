@@ -4,7 +4,7 @@ from django.contrib.auth import get_user_model
 from django.template import Context, Template
 from django.test import TestCase
 
-from .utils import create_fake_user
+from ..tools.test_tools import create_fake_user
 
 CHARACTER_IMAGE_URL_BASE = "https://images.evetech.net/characters"
 

@@ -13,6 +13,7 @@ def create_fake_token(
     user: User = None,
     character_owner_hash: str = None,
 ) -> Token:
+    """Create a fake token."""
     if not character_owner_hash:
         character_owner_hash = random_string(28)
     return Token.objects.create(

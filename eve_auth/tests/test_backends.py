@@ -2,7 +2,7 @@ from django.test import RequestFactory, TestCase
 from django.urls import reverse
 
 from ..backends import EveSSOBackend
-from .utils import create_fake_user
+from ..tools.test_tools import create_fake_user
 
 
 class TestEveSSOBackendAuthenticate(TestCase):
