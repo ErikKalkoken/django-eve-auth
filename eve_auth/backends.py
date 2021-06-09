@@ -16,6 +16,9 @@ class EveSSOBackend(BaseBackend):
         """Authenticate user with Eve token."""
         if not isinstance(token, Token):
             return None
+        if token.expired:
+            logger.info("Can not authenticate with expired Eve SSO token")
+            return None
         User = get_user_model()
         try:
             user = User.objects.get(
@@ -24,6 +27,7 @@ class EveSSOBackend(BaseBackend):
         except User.DoesNotExist:
             user = self.create_user_from_token(token)
         else:
+            logger.info("Authenticated user %s with Eve SSO token", user)
             user.eve_character.character_name = token.character_name
             user.eve_character.save()
         return user
@@ -44,6 +48,7 @@ class EveSSOBackend(BaseBackend):
             character_name=token.character_name,
             character_owner_hash=token.character_owner_hash,
         )
+        logger.info("Created new user %s from Eve SSO token", user)
         return user
 
     @staticmethod

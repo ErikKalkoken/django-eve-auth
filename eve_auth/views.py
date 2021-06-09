@@ -9,7 +9,7 @@ from esi.models import Token
 
 from . import app_settings
 
-logger = logging.getLogger("__name__")
+logger = logging.getLogger(__name__)
 
 
 @token_required(new=True, scopes=app_settings.EVE_AUTH_LOGIN_SCOPES)
@@ -30,20 +30,30 @@ def login(request, token: Token):
             token.save()
         if user.is_active:
             auth.login(request, user)
+            logger.info("User %s has logged in.", user)
             return (
                 redirect(next_page_url)
                 if next_page_url
                 else redirect(settings.LOGIN_REDIRECT_URL)
             )
         else:
-            messages.warning(request, _("Your have been banned from this website."))
+            logger.info("User %s is inactive and therefore not allowed to login.", user)
+            messages.warning(
+                request, _("User %s has been banned from this website.", user)
+            )
     else:
-        messages.error(request, _("Unable to authenticate as the selected character."))
+        logger.warning(
+            "User authentication for character %s failed.", token.character_name
+        )
+        messages.error(
+            request, _("Unable to authenticate character %s.", token.character_name)
+        )
     return redirect(next_page_url) if next_page_url else redirect(settings.LOGIN_URL)
 
 
 def logout(request):
     """Logout current user."""
     next_page_url = request.GET.get("next")
+    logger.info("Logging out user %s", request.user)
     auth.logout(request)
     return redirect(next_page_url) if next_page_url else redirect(settings.LOGIN_URL)

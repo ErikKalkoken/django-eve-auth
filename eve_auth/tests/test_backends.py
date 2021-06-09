@@ -1,8 +1,13 @@
+import datetime as dt
+from unittest.mock import Mock, patch
+
 from django.test import RequestFactory, TestCase
 from django.urls import reverse
+from django.utils.timezone import now
+from esi.app_settings import ESI_TOKEN_VALID_DURATION
 
 from ..backends import EveSSOBackend
-from ..tools.test_tools import create_fake_user
+from ..tools.test_tools import create_fake_token, create_fake_user
 
 
 class TestEveSSOBackendAuthenticate(TestCase):
@@ -26,6 +31,18 @@ class TestEveSSOBackendAuthenticate(TestCase):
         request = self.factory.get(reverse("eve_auth:login"))
         # when
         result = backend.authenticate(request, token="invalid")
+        # then
+        self.assertIsNone(result)
+
+    def test_should_return_none_when_token_is_invalid(self):
+        # given
+        backend = EveSSOBackend()
+        request = self.factory.get(reverse("eve_auth:login"))
+        my_now = now() - dt.timedelta(seconds=ESI_TOKEN_VALID_DURATION + 1000)
+        with patch("django.utils.timezone.now", Mock(return_value=my_now)):
+            token = create_fake_token(1001, "Bruce Wayne")
+        # when
+        result = backend.authenticate(request, token=token)
         # then
         self.assertIsNone(result)
 
