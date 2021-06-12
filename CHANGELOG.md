@@ -13,14 +13,8 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 
 ### Fixed
 
-## [0.2.0a2] - 2021-06-06
-
-### Changed
-
-- Various API changes
-
-## [0.2.0a1] - 2021-06-04
+## [1.0.0b1] - 2021-06-12
 
 ### Added
 
-- Initial alpha release
+- Initial beta release

@@ -53,7 +53,7 @@ def login(request, token: Token):
 
 def logout(request):
     """Logout current user."""
-    next_page_url = request.GET.get("next")
     logger.info("Logging out user %s", request.user)
     auth.logout(request)
+    next_page_url = request.GET.get("next")
     return redirect(next_page_url) if next_page_url else redirect(settings.LOGIN_URL)
