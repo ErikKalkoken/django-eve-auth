@@ -6,10 +6,20 @@
 Welcome to django-eve-auth's documentation!
 ===========================================
 
+.. figure:: _static/images/eve_auth.png
+   :align: left
+   :scale: 50 %
+   :alt: Logo
+
+Eve Auth enables users to authenticate and login to a Django website using their Eve Online account.
+
+
 .. toctree::
    :maxdepth: 2
    :caption: Contents:
 
+   operations
+   developer
    api
 
 

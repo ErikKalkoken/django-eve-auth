@@ -18,6 +18,8 @@ Models
 .. autoclass:: eve_auth.models.UserEveCharacter
     :members:
 
+.. _api-tools:
+
 Tools
 ============
 

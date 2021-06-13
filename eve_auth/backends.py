@@ -1,5 +1,6 @@
 import logging
 import re
+from typing import Optional, Tuple
 
 from django.contrib.auth import get_user_model
 from django.contrib.auth.backends import BaseBackend
@@ -12,8 +13,16 @@ logger = logging.getLogger(__name__)
 
 
 class EveSSOBackend(BaseBackend):
-    def authenticate(self, request, token: Token = None) -> User:
-        """Authenticate user with Eve token."""
+    def authenticate(self, request, token: Token = None) -> Optional[User]:
+        """Authenticate user with an Eve SSO token.
+
+        Args:
+            request: Current request object
+            token: django-esi token
+
+        Returns:
+            Authenticated user or `None` if authentication failed.
+        """
         if not isinstance(token, Token):
             return None
         if token.expired:
@@ -33,8 +42,15 @@ class EveSSOBackend(BaseBackend):
         return user
 
     @classmethod
-    def create_user_from_token(cls, token: Token) -> object:
-        """Create new user object from an ESI token."""
+    def create_user_from_token(cls, token: Token) -> User:
+        """Create new user object from an ESI token.
+
+        Args:
+            token: django-esi token
+
+        Returns:
+            Authenticated user or `None` if authentication failed.
+        """
         username = cls._clean_username(token.character_name)
         first_name, last_name = cls._first_and_last_name(token.character_name)
         user = get_user_model().objects.create(
@@ -68,13 +84,21 @@ class EveSSOBackend(BaseBackend):
         return username_2
 
     @staticmethod
-    def _first_and_last_name(fullname: str) -> tuple:
+    def _first_and_last_name(fullname: str) -> Tuple[str, str]:
         parts = fullname.split(" ")
         last_name = parts.pop()
         first_name = " ".join(parts)
         return first_name, last_name
 
-    def get_user(self, user_id):
+    def get_user(self, user_id: int) -> Optional[User]:
+        """Fetch a user.
+
+        Args:
+            user_id: PK of the requested user
+
+        Returns:
+            Found user or `None` if the user does not exist.
+        """
         User = get_user_model()
         try:
             return User.objects.get(pk=user_id)

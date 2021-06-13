@@ -54,6 +54,7 @@ extensions = [
     "recommonmark",
     "sphinx_rtd_theme",
     "sphinxcontrib_django",
+    "sphinx.ext.napoleon",
 ]
 
 # Add any paths that contain templates here, relative to this directory.

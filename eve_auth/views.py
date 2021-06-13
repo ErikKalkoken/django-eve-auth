@@ -14,7 +14,11 @@ logger = logging.getLogger(__name__)
 
 @token_required(new=True, scopes=app_settings.EVE_AUTH_LOGIN_SCOPES)
 def login(request, token: Token):
-    """Login user with authorization from EVE SSO."""
+    """Login user with authorization from EVE SSO.
+
+    GET parameters:
+        - next: View will redirect to the given URL after after successful login, instead of the default `LOGIN_REDIRECT_URL`
+    """
     next_page_url = request.GET.get("next")
     user = auth.authenticate(token=token)
     if user:
@@ -48,11 +52,15 @@ def login(request, token: Token):
         messages.error(
             request, _("Unable to authenticate character %s.", token.character_name)
         )
-    return redirect(next_page_url) if next_page_url else redirect(settings.LOGIN_URL)
+    return redirect(settings.LOGIN_URL)
 
 
 def logout(request):
-    """Logout current user."""
+    """Logout current user.
+
+    GET parameters:
+        - next: View will redirect to the given URL after after successful logout, instead of the default `LOGIN_URL`
+    """
     logger.info("Logging out user %s", request.user)
     auth.logout(request)
     next_page_url = request.GET.get("next")
