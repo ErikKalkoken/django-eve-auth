@@ -55,19 +55,7 @@ Restart your Django server.
 Here is a list of available settings for this app. They can be configured by adding them to your local Django settings file.
 
 ```{eval-rst}
-    .. |br| raw:: html
-
-        <br>
-
-    .. list-table:: Settings
-
-        *   - Name
-            - Description
-            - Default
-        *   - `EVE_AUTH_LOGIN_SCOPES`
-            - List of ESI scope names to be requested with every login. e.g. `['esi-universe.read_structures.v1', 'esi-search.search_structures.v1']`. The default will not request any scopes.
-            - `[]`
-        *   - `EVE_AUTH_USER_ICON_DEFAULT_SIZE`
-            - Default size of user icons in pixel.
-            - `24`
+    .. automodule:: eve_auth.app_settings
+        :members:
+        :exclude-members: get_setting_or_default
 ```
