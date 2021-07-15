@@ -1,4 +1,4 @@
-sphinx >= 1.7.5, < 2
-sphinx_rtd_theme
-recommonmark
+Sphinx>=4,<5
+sphinx-rtd-theme
+myst-parser
 sphinxcontrib-django

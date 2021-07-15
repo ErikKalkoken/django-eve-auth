@@ -16,7 +16,6 @@ import os
 import sys
 
 import sphinx_rtd_theme  # noqa
-from recommonmark.transform import AutoStructify
 
 import django
 
@@ -51,7 +50,7 @@ extensions = [
     "sphinx.ext.todo",
     "sphinx.ext.coverage",
     "sphinx.ext.viewcode",
-    "recommonmark",
+    "myst_parser",
     "sphinx_rtd_theme",
     "sphinxcontrib_django",
     "sphinx.ext.napoleon",
@@ -203,15 +202,6 @@ epub_exclude_files = ["search.html"]
 # If true, `todo` and `todoList` produce output, else they produce nothing.
 todo_include_todos = True
 
-# -- Options for recommonmark extension ----------------------------------------------
 
-
-def setup(app):
-    app.add_config_value(
-        "recommonmark_config",
-        {
-            "auto_toc_tree_section": "Contents",
-        },
-        True,
-    )
-    app.add_transform(AutoStructify)
+# -- Options for autodoc -------------------------------------------------
+add_module_names = False

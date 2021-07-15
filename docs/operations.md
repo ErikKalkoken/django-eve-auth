@@ -54,7 +54,7 @@ Restart your Django server.
 
 Here is a list of available settings for this app. They can be configured by adding them to your local Django settings file.
 
-```eval_rst
+```{eval-rst}
     .. |br| raw:: html
 
         <br>

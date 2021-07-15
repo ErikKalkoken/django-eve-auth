@@ -8,7 +8,7 @@ Eve Auth is designed to be used with [django-esi](https://gitlab.com/allianceaut
 
 Newly created users are stored with the Eve character the user logged in with. This allows users to be treated as eve characters and vice versa. You can access the eve character like so:
 
-```eval_rst
+```{eval-rst}
 .. note::
     The relation between user and character is one-to-one only. Multiple character ownerships are not supported.
 ```
@@ -75,7 +75,7 @@ If you need to add custom information to an user object for your site  - e.g. a 
 
 If you need to create users with eve characters for your unit tests Eve Auth is providing a tools for creating fake users and fake tokens.
 
-```eval_rst
+```{eval-rst}
 .. seealso::
     Please see :ref:`api-tools` for the test tools.
 ```
