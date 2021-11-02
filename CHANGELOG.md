@@ -10,6 +10,11 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 ## Added
 
 - Show permissions on admin site
+- `eve_auth.test_tools.add_permission_to_user_by_name()` to add a permission to a user
+
+### Changed
+
+- `eve_auth.test_tools.create_fake_user()` can now create a user with permissions
 
 ## [1.0.0] - 2021-07-15
 
