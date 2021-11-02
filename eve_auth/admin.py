@@ -2,10 +2,22 @@ from typing import Optional
 
 from django.contrib import admin
 from django.contrib.auth.admin import UserAdmin as BaseUserAdmin
-from django.contrib.auth.models import User
+from django.contrib.auth.models import Permission, User
 from django.core.exceptions import ObjectDoesNotExist
 
 from .models import UserEveCharacter
+
+
+@admin.register(Permission)
+class PermissionAdmin(admin.ModelAdmin):
+    list_select_related = True
+    list_filter = ("content_type__app_label",)
+
+    def has_add_permission(self, *args, **kwargs) -> bool:
+        return False
+
+    def has_change_permission(self, *args, **kwargs) -> bool:
+        return False
 
 
 class UserEveCharacterInline(admin.StackedInline):

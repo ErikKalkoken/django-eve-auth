@@ -29,7 +29,7 @@ compilemessages:
 	django-admin compilemessages -l zh_Hans
 
 coverage:
-	coverage run ../appdir/manage.py test $(package).tests --keepdb --failfast --debug-mode && coverage html && coverage report
+	coverage run ../appdir/manage.py test $(package).tests --keepdb --failfast && coverage html && coverage report -m
 
 test:
 	# runs a full test incl. re-creating of the test DB
