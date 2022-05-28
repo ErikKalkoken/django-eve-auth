@@ -25,7 +25,7 @@ Configure your Django settings as follows:
 - Add `"eve_auth"` to your `INSTALLED_APPS`
 - Add `"eve_auth.backends.EveSSOBackend"` to `AUTHENTICATION_BACKENDS`. Make sure it is the first in the list.
 - Set `LOGIN_URL`, `LOGOUT_REDIRECT_URL` and `LOGIN_REDIRECT_URL` to the corresponding view names of your site.
-- Optional: Add additional settings if you want to change any defaults. See [Settings](#settings) for the full list.
+- Optional: Add additional settings if you want to change any defaults. See [Settings](settings) for the full list.
 
 ### Step 3 - Include URLs
 
@@ -50,6 +50,7 @@ python manage.py collectstatic
 
 Restart your Django server.
 
+(settings)=
 ## Settings
 
 Here is a list of available settings for this app. They can be configured by adding them to your local Django settings file.

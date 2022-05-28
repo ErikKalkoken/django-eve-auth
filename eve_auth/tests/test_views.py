@@ -1,4 +1,4 @@
-from unittest.mock import patch
+from unittest.mock import Mock, patch
 
 from django.contrib.auth.models import User
 from django.contrib.sessions.middleware import SessionMiddleware
@@ -39,7 +39,7 @@ class TestLogin(TestCase):
         if next_url:
             url += f"?next={next_url}"
         request = self.factory.get(url)
-        middleware = SessionMiddleware()
+        middleware = SessionMiddleware(Mock())
         middleware.process_request(request)
         request.session.save()
         orig_view = views.login.__wrapped__
@@ -177,7 +177,7 @@ class TestLogout(TestCase):
         user = create_fake_user(1001, "Bruce Wayne", OWNER_HASH)
         request = self.factory.get(reverse("eve_auth:login"))
         request.user = user
-        middleware = SessionMiddleware()
+        middleware = SessionMiddleware(Mock())
         middleware.process_request(request)
         request.session.save()
         # when
@@ -193,7 +193,7 @@ class TestLogout(TestCase):
         url = reverse("eve_auth:login") + "?next=/new-page"
         request = self.factory.get(url)
         request.user = user
-        middleware = SessionMiddleware()
+        middleware = SessionMiddleware(Mock())
         middleware.process_request(request)
         request.session.save()
         # when

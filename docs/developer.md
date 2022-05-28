@@ -15,7 +15,7 @@ Newly created users are stored with the Eve character the user logged in with. T
 
 Users are identified through the SSO owner hash of their character. This hash will change when the ownership of a character changes. If that happens a new user account will be created for that character.
 
-After login, a SSO token is stored for each user, which can be later used for accessing ESI through the django-esi API. By default logins do not require any ESI scopes, but you can add scopes via the setting `EVE_AUTH_LOGIN_SCOPES` (See [Settings](#settings) for details).
+After login, a SSO token is stored for each user, which can be later used for accessing ESI through the django-esi API. By default logins do not require any ESI scopes, but you can add scopes via the setting `EVE_AUTH_LOGIN_SCOPES` (See [Settings](settings) for details).
 
 ## User login/logout
 
