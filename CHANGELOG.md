@@ -5,11 +5,19 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](http://keepachangelog.com/)
 and this project adheres to [Semantic Versioning](http://semver.org/).
 
-## [Unreleased] - yyyy-mm-dd
+## [1.3.0] - 2023-09-01
+
+## Added
+
+- Added support for Python 3.10 & 3.11
+- Added support for Python 4.2
 
 ## Changed
 
 - Automatic dark and light mode for Sphinx docs
+- Migrated build process to PEP 621
+- Removed support for Python 3.7. New minimal Python version is 3.8
+- Removed support for Django 2.2 & 4.0
 
 ## [1.2.0] - 2022-05-28
 

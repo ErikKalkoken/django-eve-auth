@@ -1,6 +1,0 @@
-include LICENSE
-include README.md
-recursive-include eve_auth *.py
-recursive-include eve_auth/templates *.*
-recursive-exclude eve_auth/tests *.*
-recursive-exclude testsite *.*
