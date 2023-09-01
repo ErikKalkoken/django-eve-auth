@@ -1,18 +1,23 @@
+"""Authentication backends for Eve Auth."""
+
 import logging
 import re
 from typing import Optional, Tuple
 
 from django.contrib.auth import get_user_model
 from django.contrib.auth.backends import BaseBackend
-from django.contrib.auth.models import User
 from esi.models import Token
 
 from .models import UserEveCharacter
 
 logger = logging.getLogger(__name__)
+User = get_user_model()
 
 
 class EveSSOBackend(BaseBackend):
+    """A backend for authenticating users with Eve SSO tokens."""
+
+    # pylint: disable=arguments-differ
     def authenticate(self, request, token: Token = None) -> Optional[User]:
         """Authenticate user with an Eve SSO token.
 
@@ -28,7 +33,6 @@ class EveSSOBackend(BaseBackend):
         if token.expired:
             logger.info("Can not authenticate with expired Eve SSO token")
             return None
-        User = get_user_model()
         try:
             user = User.objects.get(
                 eve_character__character_owner_hash=token.character_owner_hash
@@ -75,12 +79,11 @@ class EveSSOBackend(BaseBackend):
     @staticmethod
     def _generate_username(username) -> str:
         """Generate and return unique username from given username."""
-        User = get_user_model()
         username_2 = username
-        n = 0
+        run = 0
         while User.objects.filter(username=username_2).exists():
-            n += 1
-            username_2 = f"{username}_{n}"
+            run += 1
+            username_2 = f"{username}_{run}"
         return username_2
 
     @staticmethod
@@ -99,7 +102,6 @@ class EveSSOBackend(BaseBackend):
         Returns:
             Found user or `None` if the user does not exist.
         """
-        User = get_user_model()
         try:
             return User.objects.get(pk=user_id)
         except User.DoesNotExist:

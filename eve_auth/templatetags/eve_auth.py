@@ -1,14 +1,15 @@
-from django import template
-from django.contrib.auth.models import User
+"""Template tags for Eve Auth."""
 
-from .. import app_settings
-from ..models import UserEveCharacter
+from django import template
+
+from eve_auth import app_settings
+from eve_auth.models import UserEveCharacter
 
 register = template.Library()
 
 
 @register.inclusion_tag("eve_auth/user_icon.html")
-def user_icon(user: User, size=None) -> str:
+def user_icon(user, size=None) -> str:
     """Render an icon for the given user with his/her Eve portrait."""
     if not size:
         size = app_settings.EVE_AUTH_USER_ICON_DEFAULT_SIZE

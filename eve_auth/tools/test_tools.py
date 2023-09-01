@@ -1,11 +1,16 @@
+"""Test tools for Eve Auth."""
+
 import secrets
 import string
 from typing import List
 
-from django.contrib.auth.models import Permission, User
+from django.contrib.auth import get_user_model
+from django.contrib.auth.models import Permission
 from esi.models import Token
 
-from ..backends import EveSSOBackend
+from eve_auth.backends import EveSSOBackend
+
+User = get_user_model()
 
 
 def create_fake_token(

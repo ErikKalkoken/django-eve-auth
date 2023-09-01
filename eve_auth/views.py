@@ -1,3 +1,5 @@
+"""Views for Eve Auth."""
+
 import logging
 
 from django.conf import settings
@@ -17,7 +19,9 @@ def login(request, token: Token):
     """Login user with authorization from EVE SSO.
 
     GET parameters:
-        - next: View will redirect to the given URL after after successful login, instead of the default `LOGIN_REDIRECT_URL`
+        - next: View will redirect to the given URL after after successful login,
+            instead of the default `LOGIN_REDIRECT_URL`
+
     """
     next_page_url = request.GET.get("next")
     user = auth.authenticate(token=token)
@@ -32,6 +36,7 @@ def login(request, token: Token):
             token.delete()
         else:
             token.save()
+
         if user.is_active:
             auth.login(request, user)
             logger.info("User %s has logged in.", user)
@@ -40,17 +45,18 @@ def login(request, token: Token):
                 if next_page_url
                 else redirect(settings.LOGIN_REDIRECT_URL)
             )
-        else:
-            logger.info("User %s is inactive and therefore not allowed to login.", user)
-            messages.warning(
-                request, _("User %s has been banned from this website.", user)
-            )
+
+        logger.info("User %s is inactive and therefore not allowed to login.", user)
+        messages.warning(
+            request, _("User %s has been banned from this website.") % user
+        )
+
     else:
         logger.warning(
             "User authentication for character %s failed.", token.character_name
         )
         messages.error(
-            request, _("Unable to authenticate character %s.", token.character_name)
+            request, _("Unable to authenticate character %s.") % token.character_name
         )
     return redirect(settings.LOGIN_URL)
 

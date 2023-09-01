@@ -1,3 +1,5 @@
+"""Models for Eve Auth."""
+
 from urllib.parse import urlencode, urljoin
 
 from django.conf import settings
