@@ -1,18 +1,11 @@
 stages:
-- check
+- checks
 - test
 - deploy
 
-before_script:
-- apt-get update
-- apt-get install redis-server -y
-- redis-server --daemonize yes
-- python -V
-- pip install tox
-
-pre-commit-check:
-  stage: check
-  image: python:3.8-buster
+pre-commit:
+  stage: checks
+  image: python:3.10-bullseye
   variables:
     PRE_COMMIT_HOME: ${CI_PROJECT_DIR}/.cache/pre-commit
   cache:
@@ -22,85 +15,78 @@ pre-commit-check:
     - pip install pre-commit
     - pre-commit run --all-files
 
-.test-py37:
-  stage: test
-  needs: []
-  image: python:3.7-buster
+.tox_setup:
+  before_script:
+    - apt-get update
+    - apt-get install redis-server -y
+    - redis-server --daemonize yes
+    - python -V
+    - pip install tox
 
-.test-py38:
-  stage: test
-  needs: []
-  image: python:3.8-buster
+# pylint:
+#   stage: checks
+#   extends: .tox_setup
+#   image: python:3.10-bullseye
+#   script:
+#   - tox -e pylint
 
-.test-py39:
-  stage: test
-  needs: []
-  image: python:3.9-buster
+test-py38:
+  extends: .tox_setup
+  image: python:3.8-bullseye
+  script:
+    - tox -e py38-$DJANGO_VERSION
+    - bash <(curl -s https://codecov.io/bash)
+  parallel:
+    matrix:
+      - DJANGO_VERSION: [django32, django42]
+
+test-py39:
+  extends: .tox_setup
+  image: python:3.9-bullseye
+  script:
+    - tox -e py39-$DJANGO_VERSION
+    - bash <(curl -s https://codecov.io/bash)
+  parallel:
+    matrix:
+      - DJANGO_VERSION: [django32, django42]
+
+test-py310:
+  extends: .tox_setup
+  image: python:3.10-bullseye
+  script:
+    - tox -e py310-$DJANGO_VERSION
+    - bash <(curl -s https://codecov.io/bash)
+  parallel:
+    matrix:
+      - DJANGO_VERSION: [django32, django42]
+
+test-py311:
+  extends: .tox_setup
+  image: python:3.11-bullseye
+  script:
+    - tox -e py311-$DJANGO_VERSION
+    - bash <(curl -s https://codecov.io/bash)
+  parallel:
+    matrix:
+      - DJANGO_VERSION: [django42]
 
 test-docs:
   stage: test
-  needs: []
-  image: python:3.7-buster
+  image: python:3.10-bullseye
+  before_script:
+  - pip install tox
   script:
-  - tox -e docs
-
-test-37-django22:
-  extends: .test-py37
-  script:
-  - tox -e py37-django22
-  - bash <(curl -s https://codecov.io/bash)
-
-test-38-django22:
-  extends: .test-py38
-  script:
-  - tox -e py38-django22
-  - bash <(curl -s https://codecov.io/bash)
-
-test-39-django22:
-  extends: .test-py39
-  script:
-  - tox -e py39-django22
-  - bash <(curl -s https://codecov.io/bash)
-
-test-37-django32:
-  extends: .test-py37
-  script:
-  - tox -e py37-django32
-  - bash <(curl -s https://codecov.io/bash)
-
-test-38-django32:
-  extends: .test-py38
-  script:
-  - tox -e py38-django32
-  - bash <(curl -s https://codecov.io/bash)
-
-test-39-django32:
-  extends: .test-py39
-  script:
-  - tox -e py39-django32
-  - bash <(curl -s https://codecov.io/bash)
-
-test-38-django40:
-  extends: .test-py38
-  script:
-  - tox -e py38-django40
-  - bash <(curl -s https://codecov.io/bash)
-
-test-39-django40:
-  extends: .test-py39
-  script:
-  - tox -e py39-django40
-  - bash <(curl -s https://codecov.io/bash)
+    - tox -e docs
 
 deploy-pypi:
   stage: deploy
-  image: python:3.7-buster
+  image: python:3.10-bullseye
 
   before_script:
-    - pip install twine
+    - pip install build twine
 
   script:
-    - python setup.py sdist
+    - python -m build
     - twine upload dist/*
 
   only:
