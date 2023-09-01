@@ -1,5 +1,6 @@
 appname = django-eve-auth
 package = eve_auth
+django_path =  /home/erik997/python/projects/appdir-project/allianceauth-app-directory
 
 help:
 	@echo "Makefile for $(appname)"
@@ -29,11 +30,7 @@ compilemessages:
 	django-admin compilemessages -l zh_Hans
 
 coverage:
-	coverage run ../appdir/manage.py test $(package).tests --keepdb --failfast && coverage html && coverage report -m
-
-test:
-	# runs a full test incl. re-creating of the test DB
-	python ../appdir/manage.py test $(package) --failfast --debug-mode -v 2
+	coverage run $(django_path)/manage.py test $(package).tests --keepdb --failfast && coverage html && coverage report -m
 
 pylint:
 	pylint --load-plugins pylint_django $(package)
@@ -41,13 +38,5 @@ pylint:
 check_complexity:
 	flake8 $(package) --max-complexity=10
 
-nuke_testdb:
-	# This will delete the current test database
-	# very userful after large changes to the models
-	mysql -u root -p -e "drop database test_aa_dev_2;"
-
-flake8:
-	flake8 $(package) --count
-
 graph_models:
-	python ../appdir/manage.py graph_models eve_auth esi -g --arrow-shape normal -o $(appname)_models.png
+	python $(django_path)/manage.py graph_models eve_auth esi -g --arrow-shape normal -o $(appname)_models.png
