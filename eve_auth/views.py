@@ -64,10 +64,19 @@ def login(request, token: Token):
 def logout(request):
     """Logout current user.
 
-    GET parameters:
-        - next: View will redirect to the given URL after after successful logout, instead of the default `LOGIN_URL`
+    Will redirect to URLs in order:
+        - URL from ``next`` GET parameter, when set
+        -  ``LOGOUT_REDIRECT_URL`` setting, when set
+        - ``LOGIN_URL`` setting
+
     """
     logger.info("Logging out user %s", request.user)
     auth.logout(request)
-    next_page_url = request.GET.get("next")
-    return redirect(next_page_url) if next_page_url else redirect(settings.LOGIN_URL)
+
+    if next_page_url := request.GET.get("next"):
+        return redirect(next_page_url)
+
+    if settings.LOGOUT_REDIRECT_URL:
+        return redirect(settings.LOGOUT_REDIRECT_URL)
+
+    return redirect(settings.LOGIN_URL)

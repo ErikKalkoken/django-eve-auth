@@ -19,6 +19,10 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 - Removed support for Python 3.7. New minimal Python version is 3.8
 - Removed support for Django 2.2 & 4.0
 
+## Fixed
+
+- Logout view does not respect LOGOUT_REDIRECT_URL (#1)
+
 ## [1.2.0] - 2022-05-28
 
 ## Changed

@@ -2,12 +2,13 @@ from unittest.mock import Mock, patch
 
 from django.contrib.auth.models import User
 from django.contrib.sessions.middleware import SessionMiddleware
-from django.test import RequestFactory, TestCase
+from django.test import RequestFactory, TestCase, override_settings
 from django.urls import reverse
 from esi.models import Token
 
+from eve_auth.tools.test_tools import create_fake_token, create_fake_user
+
 from .. import views
-from ..tools.test_tools import create_fake_token, create_fake_user
 
 MODULE_BACKEND = "eve_auth.backends"
 MODULE_VIEWS = "eve_auth.views"
@@ -169,14 +170,17 @@ class TestLogin(TestCase):
 
 @patch(MODULE_VIEWS + ".settings.LOGIN_URL", "/logged-out")
 class TestLogout(TestCase):
-    def setUp(self) -> None:
-        self.factory = RequestFactory()
+    @classmethod
+    def setUpClass(cls) -> None:
+        super().setUpClass()
+        cls.factory = RequestFactory()
+        cls.user = create_fake_user(1001, "Bruce Wayne", OWNER_HASH)
 
+    @override_settings(LOGIN_URL="/logged-out")
     def test_should_logout_user_with_default_redirect(self):
         # given
-        user = create_fake_user(1001, "Bruce Wayne", OWNER_HASH)
         request = self.factory.get(reverse("eve_auth:login"))
-        request.user = user
+        request.user = self.user
         middleware = SessionMiddleware(Mock())
         middleware.process_request(request)
         request.session.save()
@@ -189,10 +193,9 @@ class TestLogout(TestCase):
 
     def test_should_logout_user_and_redirect_to_next(self):
         # given
-        user = create_fake_user(1001, "Bruce Wayne", OWNER_HASH)
         url = reverse("eve_auth:login") + "?next=/new-page"
         request = self.factory.get(url)
-        request.user = user
+        request.user = self.user
         middleware = SessionMiddleware(Mock())
         middleware.process_request(request)
         request.session.save()
@@ -201,4 +204,19 @@ class TestLogout(TestCase):
         # then
         self.assertEqual(response.status_code, 302)
         self.assertEqual(response.url, "/new-page")
+        self.assertFalse(request.user.is_authenticated)
+
+    @override_settings(LOGOUT_REDIRECT_URL="/logged-out-2")
+    def test_should_logout_user_and_redirect_to_logout_url(self):
+        # given
+        request = self.factory.get(reverse("eve_auth:login"))
+        request.user = self.user
+        middleware = SessionMiddleware(Mock())
+        middleware.process_request(request)
+        request.session.save()
+        # when
+        response = views.logout(request)
+        # then
+        self.assertEqual(response.status_code, 302)
+        self.assertEqual(response.url, "/logged-out-2")
         self.assertFalse(request.user.is_authenticated)
