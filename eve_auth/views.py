@@ -20,7 +20,8 @@ def login(request, token: Token):
 
     GET parameters:
         - next: View will redirect to the given URL after after successful login,
-        instead of the default `LOGIN_REDIRECT_URL`
+            instead of the default `LOGIN_REDIRECT_URL`
+
     """
     next_page_url = request.GET.get("next")
     user = auth.authenticate(token=token)
