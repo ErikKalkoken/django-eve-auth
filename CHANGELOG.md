@@ -5,6 +5,12 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](http://keepachangelog.com/)
 and this project adheres to [Semantic Versioning](http://semver.org/).
 
+## [1.3.1] - 2023-11-18
+
+## Fixed
+
+- django-esi dependency updated to latest required version after the SSO change
+
 ## [1.3.0] - 2023-09-01
 
 ## Added
