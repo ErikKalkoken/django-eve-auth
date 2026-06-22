@@ -14,3 +14,5 @@ htmlcov/
 .mypy_cache
 _build/
 _templates/
+.env
+.temp/
