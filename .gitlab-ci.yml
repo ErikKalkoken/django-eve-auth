@@ -37,8 +37,9 @@ test:
     matrix:
     - PYTHON_VERSION: [10, 11, 12, 13]
       DJANGO_VERSION: [42, 52]
+      ESI_VERSION: [8, 9]
   script:
-    - tox -e py3$PYTHON_VERSION-django$DJANGO_VERSION
+    - tox -e py3$PYTHON_VERSION-django$DJANGO_VERSION-esi$ESI_VERSION
     - bash <(curl -s https://codecov.io/bash)
 
 test-docs:

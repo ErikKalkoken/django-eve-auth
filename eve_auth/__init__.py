@@ -1,3 +1,3 @@
 """Django user authentication via EVE SSO."""
 
-__version__ = "2.0.0dev1"
+__version__ = "2.0.0a1"
