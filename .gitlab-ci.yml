@@ -5,7 +5,7 @@ stages:
 
 pre-commit:
   stage: checks
-  image: python:3.10-bullseye
+  image: python:3.12-bookworm
   variables:
     PRE_COMMIT_HOME: ${CI_PROJECT_DIR}/.cache/pre-commit
   cache:
@@ -26,53 +26,24 @@ pre-commit:
 pylint:
   stage: checks
   extends: .tox_setup
-  image: python:3.10-bullseye
+  image: python:3.12-bookworm
   script:
   - tox -e pylint
 
-test-py38:
+test:
   extends: .tox_setup
-  image: python:3.8-bullseye
-  script:
-    - tox -e py38-$DJANGO_VERSION
-    - bash <(curl -s https://codecov.io/bash)
+  image: python:3.$PYTHON_VERSION-bookworm
   parallel:
     matrix:
-      - DJANGO_VERSION: [django32, django42]
-
-test-py39:
-  extends: .tox_setup
-  image: python:3.9-bullseye
+    - PYTHON_VERSION: [10, 11, 12, 13]
+      DJANGO_VERSION: [42, 52]
   script:
-    - tox -e py39-$DJANGO_VERSION
+    - tox -e py3$PYTHON_VERSION-django$DJANGO_VERSION
     - bash <(curl -s https://codecov.io/bash)
-  parallel:
-    matrix:
-      - DJANGO_VERSION: [django32, django42]
-
-test-py310:
-  extends: .tox_setup
-  image: python:3.10-bullseye
-  script:
-    - tox -e py310-$DJANGO_VERSION
-    - bash <(curl -s https://codecov.io/bash)
-  parallel:
-    matrix:
-      - DJANGO_VERSION: [django32, django42]
-
-test-py311:
-  extends: .tox_setup
-  image: python:3.11-bullseye
-  script:
-    - tox -e py311-$DJANGO_VERSION
-    - bash <(curl -s https://codecov.io/bash)
-  parallel:
-    matrix:
-      - DJANGO_VERSION: [django42]
 
 test-docs:
   stage: test
-  image: python:3.10-bullseye
+  image: python:3.12-bookworm
   before_script:
   - pip install tox
   script:
@@ -80,7 +51,7 @@ test-docs:
 
 deploy-pypi:
   stage: deploy
-  image: python:3.10-bullseye
+  image: python:3.12-bookworm
 
   before_script:
     - pip install build twine

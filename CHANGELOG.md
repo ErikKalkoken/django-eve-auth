@@ -5,6 +5,19 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](http://keepachangelog.com/)
 and this project adheres to [Semantic Versioning](http://semver.org/).
 
+## [2.0.0] - TBD
+
+This release is a modernization effort that adds support for recent Django and django-esi versions and contains breaking changes.
+
+## Changed
+
+- BREAKING CHANGE: Drops support for Python 3.8 & 3.9
+- BREAKING CHANGE: Drops support for Django 3.2
+- BREAKING CHANGE: Drops support for django-esi 5, 6 & 7
+- Added support for Python 3.12 & 3.13
+- Added support for Django 5.2
+- Added support for django-esi 8 & 9
+
 ## [1.3.1] - 2023-11-18
 
 ## Fixed
