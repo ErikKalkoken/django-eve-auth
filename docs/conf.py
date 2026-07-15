@@ -106,7 +106,7 @@ html_theme_options = {
     "show_powered_by": False,
     "sidebar_collapse": True,
     "extra_nav_links": {
-        "Report Issues": "https://gitlab.com/ErikKalkoken/dhooks-lite/-/issues",
+        "Report Issues": "https://github.com/ErikKalkoken/django-eve-auth/issues",
     },
 }
 
