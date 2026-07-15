@@ -32,10 +32,8 @@ test = ["coverage"]
 
 
 [project.urls]
-Documentation = "https://django-eve-auth.readthedocs.io/en/latest/"
-Source = "https://gitlab.com/ErikKalkoken/django-eve-auth"
-Changelog = "https://gitlab.com/ErikKalkoken/django-eve-auth/-/blob/master/CHANGELOG.md"
-Tracker = "https://gitlab.com/ErikKalkoken/django-eve-auth/-/issues"
+Homepage = "https://github.com/ErikKalkoken/django-eve-auth"
+Documentation = "https://django-eve-auth.readthedocs.io"
 
 [tool.flit.module]
 name = "eve_auth"
